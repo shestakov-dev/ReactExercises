@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExercisesStudentCardRouteImport } from './routes/exercises/student-card'
+import { Route as ExercisesStatusBadgeRouteImport } from './routes/exercises/status-badge'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,30 +23,39 @@ const ExercisesStudentCardRoute = ExercisesStudentCardRouteImport.update({
   path: '/exercises/student-card',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExercisesStatusBadgeRoute = ExercisesStatusBadgeRouteImport.update({
+  id: '/exercises/status-badge',
+  path: '/exercises/status-badge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/exercises/student-card'
+  fullPaths: '/' | '/exercises/status-badge' | '/exercises/student-card'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/exercises/student-card'
-  id: '__root__' | '/' | '/exercises/student-card'
+  to: '/' | '/exercises/status-badge' | '/exercises/student-card'
+  id: '__root__' | '/' | '/exercises/status-badge' | '/exercises/student-card'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExercisesStatusBadgeRoute: typeof ExercisesStatusBadgeRoute
   ExercisesStudentCardRoute: typeof ExercisesStudentCardRoute
 }
 
@@ -65,11 +75,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesStudentCardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exercises/status-badge': {
+      id: '/exercises/status-badge'
+      path: '/exercises/status-badge'
+      fullPath: '/exercises/status-badge'
+      preLoaderRoute: typeof ExercisesStatusBadgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExercisesStatusBadgeRoute: ExercisesStatusBadgeRoute,
   ExercisesStudentCardRoute: ExercisesStudentCardRoute,
 }
 export const routeTree = rootRouteImport
