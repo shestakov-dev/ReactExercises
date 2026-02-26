@@ -7,14 +7,21 @@
 .exercise-topbar {
 	background: var(--bg-surface);
 	border-bottom: 1px solid var(--border);
-	padding: 0 24px;
 	height: 52px;
 	display: flex;
-	align-items: center;
-	gap: 16px;
+	justify-content: center;
 	position: sticky;
 	top: 0;
 	z-index: 100;
+}
+
+.exercise-topbar__inner {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	padding: 0 24px;
+	max-width: 1400px;
+	width: 100%;
 }
 
 .exercise-topbar__back {
@@ -56,10 +63,16 @@
 .exercise-body {
 	flex: 1;
 	display: grid;
-	grid-template-columns: 340px 1fr;
+	grid-template-columns: 420px 1fr;
 	max-width: 1400px;
 	width: 100%;
 	margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+	.exercise-body {
+		grid-template-columns: 340px 1fr;
+	}
 }
 
 @media (max-width: 860px) {

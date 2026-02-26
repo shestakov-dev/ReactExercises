@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExercisesStudentCardRouteImport } from './routes/exercises/student-card'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExercisesStudentCardRoute = ExercisesStudentCardRouteImport.update({
+  id: '/exercises/student-card',
+  path: '/exercises/student-card',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/exercises/student-card'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/exercises/student-card'
+  id: '__root__' | '/' | '/exercises/student-card'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExercisesStudentCardRoute: typeof ExercisesStudentCardRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exercises/student-card': {
+      id: '/exercises/student-card'
+      path: '/exercises/student-card'
+      fullPath: '/exercises/student-card'
+      preLoaderRoute: typeof ExercisesStudentCardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExercisesStudentCardRoute: ExercisesStudentCardRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
