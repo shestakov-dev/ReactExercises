@@ -14,6 +14,7 @@ import { Route as ExercisesTabsRouteImport } from './routes/exercises/tabs'
 import { Route as ExercisesStudentCardRouteImport } from './routes/exercises/student-card'
 import { Route as ExercisesStatusBadgeRouteImport } from './routes/exercises/status-badge'
 import { Route as ExercisesFilterableListRouteImport } from './routes/exercises/filterable-list'
+import { Route as ExercisesClassroomRouteImport } from './routes/exercises/classroom'
 import { Route as ExercisesAccordionRouteImport } from './routes/exercises/accordion'
 
 const IndexRoute = IndexRouteImport.update({
@@ -41,6 +42,11 @@ const ExercisesFilterableListRoute = ExercisesFilterableListRouteImport.update({
   path: '/exercises/filterable-list',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExercisesClassroomRoute = ExercisesClassroomRouteImport.update({
+  id: '/exercises/classroom',
+  path: '/exercises/classroom',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExercisesAccordionRoute = ExercisesAccordionRouteImport.update({
   id: '/exercises/accordion',
   path: '/exercises/accordion',
@@ -50,6 +56,7 @@ const ExercisesAccordionRoute = ExercisesAccordionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/exercises/accordion': typeof ExercisesAccordionRoute
+  '/exercises/classroom': typeof ExercisesClassroomRoute
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/exercises/accordion': typeof ExercisesAccordionRoute
+  '/exercises/classroom': typeof ExercisesClassroomRoute
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/exercises/accordion': typeof ExercisesAccordionRoute
+  '/exercises/classroom': typeof ExercisesClassroomRoute
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/exercises/accordion'
+    | '/exercises/classroom'
     | '/exercises/filterable-list'
     | '/exercises/status-badge'
     | '/exercises/student-card'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/exercises/accordion'
+    | '/exercises/classroom'
     | '/exercises/filterable-list'
     | '/exercises/status-badge'
     | '/exercises/student-card'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/exercises/accordion'
+    | '/exercises/classroom'
     | '/exercises/filterable-list'
     | '/exercises/status-badge'
     | '/exercises/student-card'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ExercisesAccordionRoute: typeof ExercisesAccordionRoute
+  ExercisesClassroomRoute: typeof ExercisesClassroomRoute
   ExercisesFilterableListRoute: typeof ExercisesFilterableListRoute
   ExercisesStatusBadgeRoute: typeof ExercisesStatusBadgeRoute
   ExercisesStudentCardRoute: typeof ExercisesStudentCardRoute
@@ -145,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesFilterableListRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exercises/classroom': {
+      id: '/exercises/classroom'
+      path: '/exercises/classroom'
+      fullPath: '/exercises/classroom'
+      preLoaderRoute: typeof ExercisesClassroomRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exercises/accordion': {
       id: '/exercises/accordion'
       path: '/exercises/accordion'
@@ -158,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ExercisesAccordionRoute: ExercisesAccordionRoute,
+  ExercisesClassroomRoute: ExercisesClassroomRoute,
   ExercisesFilterableListRoute: ExercisesFilterableListRoute,
   ExercisesStatusBadgeRoute: ExercisesStatusBadgeRoute,
   ExercisesStudentCardRoute: ExercisesStudentCardRoute,

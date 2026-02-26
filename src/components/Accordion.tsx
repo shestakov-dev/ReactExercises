@@ -4,7 +4,6 @@ import "./Accordion.css";
 export interface AccordionItemProps {
 	title: string;
 	children: ReactNode;
-
 	isOpen?: boolean;
 	onToggle?: () => void;
 	itemId?: string;
@@ -13,7 +12,6 @@ export interface AccordionItemProps {
 export function AccordionItem({
 	title,
 	children,
-
 	isOpen = false,
 	onToggle,
 	itemId = "item",
