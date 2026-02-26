@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ExercisesTabsRouteImport } from './routes/exercises/tabs'
 import { Route as ExercisesStudentCardRouteImport } from './routes/exercises/student-card'
 import { Route as ExercisesStatusBadgeRouteImport } from './routes/exercises/status-badge'
 import { Route as ExercisesFilterableListRouteImport } from './routes/exercises/filterable-list'
@@ -18,6 +19,11 @@ import { Route as ExercisesAccordionRouteImport } from './routes/exercises/accor
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExercisesTabsRoute = ExercisesTabsRouteImport.update({
+  id: '/exercises/tabs',
+  path: '/exercises/tabs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExercisesStudentCardRoute = ExercisesStudentCardRouteImport.update({
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
+  '/exercises/tabs': typeof ExercisesTabsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
+  '/exercises/tabs': typeof ExercisesTabsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,6 +70,7 @@ export interface FileRoutesById {
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
+  '/exercises/tabs': typeof ExercisesTabsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -71,6 +80,7 @@ export interface FileRouteTypes {
     | '/exercises/filterable-list'
     | '/exercises/status-badge'
     | '/exercises/student-card'
+    | '/exercises/tabs'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -78,6 +88,7 @@ export interface FileRouteTypes {
     | '/exercises/filterable-list'
     | '/exercises/status-badge'
     | '/exercises/student-card'
+    | '/exercises/tabs'
   id:
     | '__root__'
     | '/'
@@ -85,6 +96,7 @@ export interface FileRouteTypes {
     | '/exercises/filterable-list'
     | '/exercises/status-badge'
     | '/exercises/student-card'
+    | '/exercises/tabs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -93,6 +105,7 @@ export interface RootRouteChildren {
   ExercisesFilterableListRoute: typeof ExercisesFilterableListRoute
   ExercisesStatusBadgeRoute: typeof ExercisesStatusBadgeRoute
   ExercisesStudentCardRoute: typeof ExercisesStudentCardRoute
+  ExercisesTabsRoute: typeof ExercisesTabsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -102,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercises/tabs': {
+      id: '/exercises/tabs'
+      path: '/exercises/tabs'
+      fullPath: '/exercises/tabs'
+      preLoaderRoute: typeof ExercisesTabsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercises/student-card': {
@@ -141,6 +161,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExercisesFilterableListRoute: ExercisesFilterableListRoute,
   ExercisesStatusBadgeRoute: ExercisesStatusBadgeRoute,
   ExercisesStudentCardRoute: ExercisesStudentCardRoute,
+  ExercisesTabsRoute: ExercisesTabsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
