@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExercisesStudentCardRouteImport } from './routes/exercises/student-card'
 import { Route as ExercisesStatusBadgeRouteImport } from './routes/exercises/status-badge'
+import { Route as ExercisesAccordionRouteImport } from './routes/exercises/accordion'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,33 +29,55 @@ const ExercisesStatusBadgeRoute = ExercisesStatusBadgeRouteImport.update({
   path: '/exercises/status-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExercisesAccordionRoute = ExercisesAccordionRouteImport.update({
+  id: '/exercises/accordion',
+  path: '/exercises/accordion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/exercises/accordion': typeof ExercisesAccordionRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/exercises/accordion': typeof ExercisesAccordionRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/exercises/accordion': typeof ExercisesAccordionRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/exercises/status-badge' | '/exercises/student-card'
+  fullPaths:
+    | '/'
+    | '/exercises/accordion'
+    | '/exercises/status-badge'
+    | '/exercises/student-card'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/exercises/status-badge' | '/exercises/student-card'
-  id: '__root__' | '/' | '/exercises/status-badge' | '/exercises/student-card'
+  to:
+    | '/'
+    | '/exercises/accordion'
+    | '/exercises/status-badge'
+    | '/exercises/student-card'
+  id:
+    | '__root__'
+    | '/'
+    | '/exercises/accordion'
+    | '/exercises/status-badge'
+    | '/exercises/student-card'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ExercisesAccordionRoute: typeof ExercisesAccordionRoute
   ExercisesStatusBadgeRoute: typeof ExercisesStatusBadgeRoute
   ExercisesStudentCardRoute: typeof ExercisesStudentCardRoute
 }
@@ -82,11 +105,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesStatusBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exercises/accordion': {
+      id: '/exercises/accordion'
+      path: '/exercises/accordion'
+      fullPath: '/exercises/accordion'
+      preLoaderRoute: typeof ExercisesAccordionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ExercisesAccordionRoute: ExercisesAccordionRoute,
   ExercisesStatusBadgeRoute: ExercisesStatusBadgeRoute,
   ExercisesStudentCardRoute: ExercisesStudentCardRoute,
 }
