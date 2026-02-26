@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ExercisesTabsRouteImport } from './routes/exercises/tabs'
 import { Route as ExercisesStudentCardRouteImport } from './routes/exercises/student-card'
 import { Route as ExercisesStatusBadgeRouteImport } from './routes/exercises/status-badge'
+import { Route as ExercisesQuizBuilderRouteImport } from './routes/exercises/quiz-builder'
 import { Route as ExercisesFilterableListRouteImport } from './routes/exercises/filterable-list'
 import { Route as ExercisesClassroomRouteImport } from './routes/exercises/classroom'
 import { Route as ExercisesAccordionRouteImport } from './routes/exercises/accordion'
@@ -37,6 +38,11 @@ const ExercisesStatusBadgeRoute = ExercisesStatusBadgeRouteImport.update({
   path: '/exercises/status-badge',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExercisesQuizBuilderRoute = ExercisesQuizBuilderRouteImport.update({
+  id: '/exercises/quiz-builder',
+  path: '/exercises/quiz-builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExercisesFilterableListRoute = ExercisesFilterableListRouteImport.update({
   id: '/exercises/filterable-list',
   path: '/exercises/filterable-list',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/exercises/accordion': typeof ExercisesAccordionRoute
   '/exercises/classroom': typeof ExercisesClassroomRoute
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
+  '/exercises/quiz-builder': typeof ExercisesQuizBuilderRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
   '/exercises/tabs': typeof ExercisesTabsRoute
@@ -67,6 +74,7 @@ export interface FileRoutesByTo {
   '/exercises/accordion': typeof ExercisesAccordionRoute
   '/exercises/classroom': typeof ExercisesClassroomRoute
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
+  '/exercises/quiz-builder': typeof ExercisesQuizBuilderRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
   '/exercises/tabs': typeof ExercisesTabsRoute
@@ -77,6 +85,7 @@ export interface FileRoutesById {
   '/exercises/accordion': typeof ExercisesAccordionRoute
   '/exercises/classroom': typeof ExercisesClassroomRoute
   '/exercises/filterable-list': typeof ExercisesFilterableListRoute
+  '/exercises/quiz-builder': typeof ExercisesQuizBuilderRoute
   '/exercises/status-badge': typeof ExercisesStatusBadgeRoute
   '/exercises/student-card': typeof ExercisesStudentCardRoute
   '/exercises/tabs': typeof ExercisesTabsRoute
@@ -88,6 +97,7 @@ export interface FileRouteTypes {
     | '/exercises/accordion'
     | '/exercises/classroom'
     | '/exercises/filterable-list'
+    | '/exercises/quiz-builder'
     | '/exercises/status-badge'
     | '/exercises/student-card'
     | '/exercises/tabs'
@@ -97,6 +107,7 @@ export interface FileRouteTypes {
     | '/exercises/accordion'
     | '/exercises/classroom'
     | '/exercises/filterable-list'
+    | '/exercises/quiz-builder'
     | '/exercises/status-badge'
     | '/exercises/student-card'
     | '/exercises/tabs'
@@ -106,6 +117,7 @@ export interface FileRouteTypes {
     | '/exercises/accordion'
     | '/exercises/classroom'
     | '/exercises/filterable-list'
+    | '/exercises/quiz-builder'
     | '/exercises/status-badge'
     | '/exercises/student-card'
     | '/exercises/tabs'
@@ -116,6 +128,7 @@ export interface RootRouteChildren {
   ExercisesAccordionRoute: typeof ExercisesAccordionRoute
   ExercisesClassroomRoute: typeof ExercisesClassroomRoute
   ExercisesFilterableListRoute: typeof ExercisesFilterableListRoute
+  ExercisesQuizBuilderRoute: typeof ExercisesQuizBuilderRoute
   ExercisesStatusBadgeRoute: typeof ExercisesStatusBadgeRoute
   ExercisesStudentCardRoute: typeof ExercisesStudentCardRoute
   ExercisesTabsRoute: typeof ExercisesTabsRoute
@@ -151,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExercisesStatusBadgeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exercises/quiz-builder': {
+      id: '/exercises/quiz-builder'
+      path: '/exercises/quiz-builder'
+      fullPath: '/exercises/quiz-builder'
+      preLoaderRoute: typeof ExercisesQuizBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exercises/filterable-list': {
       id: '/exercises/filterable-list'
       path: '/exercises/filterable-list'
@@ -180,6 +200,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExercisesAccordionRoute: ExercisesAccordionRoute,
   ExercisesClassroomRoute: ExercisesClassroomRoute,
   ExercisesFilterableListRoute: ExercisesFilterableListRoute,
+  ExercisesQuizBuilderRoute: ExercisesQuizBuilderRoute,
   ExercisesStatusBadgeRoute: ExercisesStatusBadgeRoute,
   ExercisesStudentCardRoute: ExercisesStudentCardRoute,
   ExercisesTabsRoute: ExercisesTabsRoute,
