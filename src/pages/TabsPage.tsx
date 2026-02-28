@@ -1,8 +1,8 @@
-import ExerciseLayout from "../layouts/ExerciseLayout";
-import StudentCard from "../components/StudentCard";
+import { ExerciseLayout } from "../layouts/ExerciseLayout";
+import { StudentCard } from "../components/StudentCard";
 import { Tabs, Tab } from "../components/Tabs";
 
-function TabsPage() {
+export function TabsPage() {
 	return (
 		<ExerciseLayout exerciseId={5}>
 			<Tabs>
@@ -30,5 +30,3 @@ function TabsPage() {
 		</ExerciseLayout>
 	);
 }
-
-export default TabsPage;

@@ -6,7 +6,10 @@ interface LengthWarningProps {
 }
 
 export function LengthWarning({ value, max }: LengthWarningProps) {
-	if (value.length < max) return null;
+	if (value.length < max) {
+		return null;
+	}
+
 	return (
 		<p
 			className="length-warning"

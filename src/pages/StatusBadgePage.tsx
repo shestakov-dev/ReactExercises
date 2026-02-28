@@ -1,8 +1,9 @@
-import ExerciseLayout from "../layouts/ExerciseLayout";
-import StatusBadge from "../components/StatusBadge";
+import { ExerciseLayout } from "../layouts/ExerciseLayout";
+import { StatusBadge } from "../components/StatusBadge";
+
 import "./StatusBadgePage.css";
 
-function StatusBadgePage() {
+export function StatusBadgePage() {
 	return (
 		<ExerciseLayout exerciseId={2}>
 			<div className="status-demo">
@@ -42,5 +43,3 @@ function StatusBadgePage() {
 		</ExerciseLayout>
 	);
 }
-
-export default StatusBadgePage;

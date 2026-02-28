@@ -1,12 +1,10 @@
-import ExerciseLayout from "../layouts/ExerciseLayout";
-import QuizBuilder from "../components/QuizBuilder";
+import { ExerciseLayout } from "../layouts/ExerciseLayout";
+import { QuizBuilder } from "../components/QuizBuilder";
 
-function QuizBuilderPage() {
+export function QuizBuilderPage() {
 	return (
 		<ExerciseLayout exerciseId={7}>
 			<QuizBuilder />
 		</ExerciseLayout>
 	);
 }
-
-export default QuizBuilderPage;

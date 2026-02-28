@@ -6,8 +6,9 @@ import {
 	type ReactElement,
 	type KeyboardEvent,
 } from "react";
-import "./Accordion.css";
 import { IconChevronDown } from "./Icons";
+
+import "./Accordion.css";
 
 export interface AccordionItemProps {
 	title: string;
@@ -41,6 +42,7 @@ export function AccordionItem({
 					<IconChevronDown className="accordion-item__icon" />
 				</button>
 			</h3>
+
 			<div
 				id={bodyId}
 				role="region"
@@ -61,17 +63,23 @@ export function Accordion({ children }: { children: ReactNode }) {
 	function handleKeyDown(e: KeyboardEvent<HTMLElement>, index: number) {
 		if (e.key === "ArrowDown") {
 			e.preventDefault();
+
 			const next = (index + 1) % items.length;
+
 			buttonRefs.current[next]?.focus();
 		} else if (e.key === "ArrowUp") {
 			e.preventDefault();
+
 			const prev = (index - 1 + items.length) % items.length;
+
 			buttonRefs.current[prev]?.focus();
 		} else if (e.key === "Home") {
 			e.preventDefault();
+
 			buttonRefs.current[0]?.focus();
 		} else if (e.key === "End") {
 			e.preventDefault();
+
 			buttonRefs.current[items.length - 1]?.focus();
 		}
 	}
@@ -81,6 +89,7 @@ export function Accordion({ children }: { children: ReactNode }) {
 			{items.map((item, index) => {
 				const buttonId = `accordion-${index}-button`;
 				const bodyId = `accordion-${index}-body`;
+
 				const isOpen = openIndex === index;
 
 				return (
@@ -103,6 +112,7 @@ export function Accordion({ children }: { children: ReactNode }) {
 								<IconChevronDown className="accordion-item__icon" />
 							</button>
 						</h3>
+
 						<div
 							id={bodyId}
 							role="region"

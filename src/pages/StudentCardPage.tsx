@@ -1,8 +1,9 @@
-import StudentCard from "../components/StudentCard";
-import ExerciseLayout from "../layouts/ExerciseLayout";
+import { StudentCard } from "../components/StudentCard";
+import { ExerciseLayout } from "../layouts/ExerciseLayout";
+
 import "./StudentCardPage.css";
 
-function StudentCardPage() {
+export function StudentCardPage() {
 	return (
 		<ExerciseLayout exerciseId={1}>
 			<div className="demo-card-list">
@@ -30,5 +31,3 @@ function StudentCardPage() {
 		</ExerciseLayout>
 	);
 }
-
-export default StudentCardPage;

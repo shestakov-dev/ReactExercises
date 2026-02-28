@@ -6,6 +6,7 @@ import {
 	type ReactElement,
 	type KeyboardEvent,
 } from "react";
+
 import "./Tabs.css";
 
 export interface TabProps {

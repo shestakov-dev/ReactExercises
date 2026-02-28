@@ -13,7 +13,7 @@ const config: Record<Status, { text: string; classModifier: string }> = {
 	offline: { text: "Офлайн", classModifier: "offline" },
 };
 
-function StatusBadge({ status, label }: StatusBadgeProps) {
+export function StatusBadge({ status, label }: StatusBadgeProps) {
 	const { text, classModifier } = config[status];
 
 	const display = label ? `${label} – ${text}` : text;
@@ -32,5 +32,3 @@ function StatusBadge({ status, label }: StatusBadgeProps) {
 		</span>
 	);
 }
-
-export default StatusBadge;

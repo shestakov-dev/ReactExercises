@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef, useId, type SubmitEvent } from "react";
 import { Tabs, Tab } from "./Tabs";
 import { Accordion, AccordionItem } from "./Accordion";
-import { FilterableList } from "./FilterableStudentList";
-import StudentCard from "./StudentCard";
+import { FilterableList } from "./FilterableList";
+import { StudentCard } from "./StudentCard";
 import { IconAPlus, IconTrash } from "./Icons";
 import { LengthWarning } from "./LengthWarning";
+
 import "./Classroom.css";
 
 interface Student {
@@ -28,12 +29,15 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 
 	useEffect(() => {
 		const dialog = dialogRef.current;
-		if (!dialog) return;
 
-		if (open) {
-			if (!dialog.open) dialog.showModal();
-		} else {
-			if (dialog.open) dialog.close();
+		if (!dialog) {
+			return;
+		}
+
+		if (open && !dialog.open) {
+			dialog.showModal();
+		} else if (!open && dialog.open) {
+			dialog.close();
 		}
 	}, [open]);
 
@@ -102,9 +106,9 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 							id={inputId}
 							type="number"
 							className="form-input"
-							min="2"
-							max="6"
-							step="0.25"
+							min={2}
+							max={6}
+							step={0.01}
 							placeholder="5.50"
 							value={value}
 							onChange={e => setValue(e.target.value)}
@@ -140,6 +144,7 @@ interface AddStudentFormProps {
 function AddStudentForm({ onAdd }: AddStudentFormProps) {
 	const [name, setName] = useState("");
 	const [grade, setGrade] = useState("");
+
 	const nameId = useId();
 	const gradeId = useId();
 
@@ -186,6 +191,7 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 						maxLength={50}
 						required
 					/>
+
 					<LengthWarning
 						value={name}
 						max={50}
@@ -209,6 +215,7 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 						maxLength={10}
 						required
 					/>
+
 					<LengthWarning
 						value={grade}
 						max={10}
@@ -260,6 +267,7 @@ function StudentRow({ student, onGrade, onDelete }: StudentRowProps) {
 						aria-label={`Нанеси оценка на ${student.name}`}>
 						<IconAPlus />
 					</button>
+
 					<button
 						type="button"
 						className="button button--sm button--danger button--icon"
@@ -299,6 +307,7 @@ function ClassStats({ students }: { students: Student[] }) {
 			className="class-stats"
 			aria-label="Статистики на класа">
 			<h3 className="class-stats__heading">Статистики</h3>
+
 			<dl className="class-stats__grid">
 				{[
 					["Ученици", students.length],
@@ -307,7 +316,7 @@ function ClassStats({ students }: { students: Student[] }) {
 					["Най-ниска", minScore !== null ? minScore.toFixed(2) : "–"],
 				].map(([label, value]) => (
 					<div
-						key={label as string}
+						key={label}
 						className="class-stats__item">
 						<dt>{label}</dt>
 						<dd>{value}</dd>
@@ -333,9 +342,9 @@ function StudentContainer({ student, onGrade, onDelete }: StudentRowProps) {
 						<div className="student-scores">
 							<p className="student-scores__label">Всички оценки</p>
 							<div className="student-scores__list">
-								{student.scores.map((score, i) => (
+								{student.scores.map((score, index) => (
 									<span
-										key={i}
+										key={index}
 										className="score-chip">
 										{score.toFixed(2)}
 									</span>
@@ -351,7 +360,7 @@ function StudentContainer({ student, onGrade, onDelete }: StudentRowProps) {
 	);
 }
 
-function Classroom() {
+export function Classroom() {
 	const [students, setStudents] = useState<Student[]>([]);
 	const [sortByAvg, setSortByAvg] = useState(false);
 
@@ -426,7 +435,6 @@ function Classroom() {
 							keyFn={student => student.id}
 							searchLabel="Търси по име"
 							searchPlaceholder="Име на ученик"
-							searchId="classroom-search"
 							emptyAllMessage="Все още няма добавени ученици."
 							noResultsMessage={query => `Няма намерени ученици за "${query}"`}
 							listAriaLabel="Списък с ученици"
@@ -441,5 +449,3 @@ function Classroom() {
 		</div>
 	);
 }
-
-export default Classroom;

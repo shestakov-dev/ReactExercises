@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { difficultyClassModifier, exercises } from "../config/exercises";
 import { IconArrowRight } from "../components/Icons";
+
 import "./Home.css";
 
-function Home() {
+export function Home() {
 	return (
 		<main className="home-page">
 			<div className="home-main">
@@ -42,5 +43,3 @@ function Home() {
 		</main>
 	);
 }
-
-export default Home;

@@ -6,7 +6,7 @@ interface StudentCardProps {
 	averageScore: number;
 }
 
-function StudentCard({ name, grade, averageScore }: StudentCardProps) {
+export function StudentCard({ name, grade, averageScore }: StudentCardProps) {
 	const initials = name
 		.split(" ")
 		.map(nameSegment => nameSegment[0])
@@ -40,5 +40,3 @@ function StudentCard({ name, grade, averageScore }: StudentCardProps) {
 		</article>
 	);
 }
-
-export default StudentCard;

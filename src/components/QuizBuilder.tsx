@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconArrowUp, IconArrowDown, IconX, IconCheck } from "./Icons";
 import { LengthWarning } from "./LengthWarning";
+
 import "./QuizBuilder.css";
 
 interface Option {
@@ -26,7 +27,7 @@ function QuizHeader({
 	onChange,
 }: {
 	title: string;
-	onChange: (v: string) => void;
+	onChange: (value: string) => void;
 }) {
 	return (
 		<div className="quiz-header-bar__field">
@@ -35,6 +36,7 @@ function QuizHeader({
 				className="quiz-header-bar__label">
 				Заглавие на теста
 			</label>
+
 			<input
 				id="quiz-title-input"
 				type="text"
@@ -222,8 +224,10 @@ function QuestionEditor({
 				{question.options.length > 0 && (
 					<fieldset className="options-box">
 						<legend className="options-box__legend">Отговори</legend>
+
 						{question.options.map((option, optionIndex) => {
 							const isCorrect = question.correctIndexes.includes(optionIndex);
+
 							const checkId = `option-checkbox-${question.id}-${option.id}`;
 							const inputId = `option-input-${question.id}-${option.id}`;
 
@@ -242,6 +246,7 @@ function QuestionEditor({
 											checked={isCorrect}
 											onChange={() => toggleCorrect(optionIndex)}
 										/>
+
 										<span className="visually-hidden">
 											{isCorrect ? "Верен" : "Неверен"}, отговор {optionIndex + 1}
 										</span>
@@ -263,6 +268,7 @@ function QuestionEditor({
 											onChange={e => updateOption(option.id, e.target.value)}
 											maxLength={MAX_OPTION_LENGTH}
 										/>
+
 										<LengthWarning
 											value={option.text}
 											max={MAX_OPTION_LENGTH}
@@ -320,6 +326,7 @@ function QuestionPreview({
 	function getOptionClass(optionIndex: number) {
 		const isChosen = chosen.includes(optionIndex);
 		const isCorrect = question.correctIndexes.includes(optionIndex);
+
 		if (!revealed) {
 			return isChosen ? "preview-option--chosen" : "";
 		}
@@ -342,7 +349,7 @@ function QuestionPreview({
 			<p className="quiz-preview__num">Въпрос {index + 1}</p>
 
 			<p className="quiz-preview__text">
-				{question.text || <span className="placeholder-text">(Без текст)</span>}
+				{question.text ?? <span className="placeholder-text">(Без текст)</span>}
 			</p>
 
 			{question.options.length > 0 && (
@@ -351,13 +358,14 @@ function QuestionPreview({
 					role="group"
 					aria-label="Отговори">
 					{question.options.map((option, optionIndex) => {
-						const optClass = getOptionClass(optionIndex);
+						const optionClass = getOptionClass(optionIndex);
+
 						const isChosen = chosen.includes(optionIndex);
 
 						return (
 							<label
 								key={option.id}
-								className={`preview-option ${optClass}`}>
+								className={`preview-option ${optionClass}`}>
 								<input
 									type="checkbox"
 									className="preview-option__check"
@@ -365,11 +373,13 @@ function QuestionPreview({
 									onChange={() => toggle(optionIndex)}
 									disabled={revealed}
 								/>
+
 								{option.text ? (
 									option.text
 								) : (
 									<em className="placeholder-text">(Без текст)</em>
 								)}
+
 								{revealed && question.correctIndexes.includes(optionIndex) && (
 									<IconCheck
 										size={16}
@@ -377,6 +387,7 @@ function QuestionPreview({
 										aria-label="Верен отговор"
 									/>
 								)}
+
 								{revealed &&
 									isChosen &&
 									!question.correctIndexes.includes(optionIndex) && (
@@ -395,7 +406,7 @@ function QuestionPreview({
 	);
 }
 
-function QuizBuilder() {
+export function QuizBuilder() {
 	const [mode, setMode] = useState<Mode>("edit");
 	const [title, setTitle] = useState("Нов тест");
 	const [questions, setQuestions] = useState<Question[]>([]);
@@ -451,6 +462,7 @@ function QuizBuilder() {
 
 	function handleResetAll() {
 		setQuizRevealed(false);
+
 		setResetKey(key => key + 1);
 	}
 
@@ -556,5 +568,3 @@ function QuizBuilder() {
 		</div>
 	);
 }
-
-export default QuizBuilder;

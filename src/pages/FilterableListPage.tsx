@@ -1,6 +1,6 @@
-import { FilterableList } from "../components/FilterableStudentList";
-import StudentCard from "../components/StudentCard";
-import ExerciseLayout from "../layouts/ExerciseLayout";
+import { FilterableList } from "../components/FilterableList";
+import { StudentCard } from "../components/StudentCard";
+import { ExerciseLayout } from "../layouts/ExerciseLayout";
 
 interface Student {
 	id: number;
@@ -20,7 +20,7 @@ const STUDENTS: Student[] = [
 	{ id: 8, name: "Виктория Тодорова", grade: "9В", averageScore: 5.84 },
 ];
 
-function FilterableListPage() {
+export function FilterableListPage() {
 	return (
 		<ExerciseLayout exerciseId={4}>
 			<FilterableList
@@ -44,5 +44,3 @@ function FilterableListPage() {
 		</ExerciseLayout>
 	);
 }
-
-export default FilterableListPage;

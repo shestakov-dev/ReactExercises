@@ -1,7 +1,7 @@
 import { Accordion, AccordionItem } from "../components/Accordion";
-import ExerciseLayout from "../layouts/ExerciseLayout";
+import { ExerciseLayout } from "../layouts/ExerciseLayout";
 
-function AccordionPage() {
+export function AccordionPage() {
 	return (
 		<ExerciseLayout exerciseId={3}>
 			<Accordion>
@@ -41,5 +41,3 @@ function AccordionPage() {
 		</ExerciseLayout>
 	);
 }
-
-export default AccordionPage;
