@@ -207,6 +207,11 @@
 	white-space: pre;
 }
 
+.exercise-aside__code:focus {
+	outline: 2px solid var(--accent);
+	outline-offset: -2px;
+}
+
 .exercise-aside__hint {
 	margin-top: 20px;
 	padding: 12px 14px;
@@ -236,13 +241,9 @@
 	min-width: 0;
 }
 
-.exercise-body:focus {
+.exercise-demo:focus {
 	outline: 2px solid var(--accent);
 	outline-offset: -2px;
-}
-
-.exercise-demo:focus {
-	outline: none;
 }
 
 .exercise-demo__label {

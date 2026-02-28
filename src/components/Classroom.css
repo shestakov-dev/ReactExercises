@@ -9,6 +9,12 @@
 	gap: 14px;
 }
 
+.classroom-students ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
 .classroom-students .filterable-list {
 	max-width: none;
 }
@@ -114,13 +120,12 @@
 
 	.student-row__actions {
 		width: 100%;
+		flex-direction: row;
 		justify-content: stretch;
 	}
 
 	.student-row__actions .button {
 		flex: 1;
-		justify-content: center;
-		height: 36px;
 	}
 }
 
@@ -158,12 +163,13 @@
 	display: flex;
 	gap: 6px;
 	flex-shrink: 0;
-	align-items: stretch;
+	align-items: center;
 }
 
 .student-row__actions .button {
-	height: 100%;
-	align-self: stretch;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .student-scores {
@@ -254,6 +260,7 @@
 	background: transparent;
 	max-width: min(90vw, 400px);
 	width: 100%;
+	margin: auto;
 }
 
 .modal-dialog::backdrop {
@@ -265,6 +272,7 @@
 	border: 1px solid var(--border-light);
 	border-radius: var(--radius-xl);
 	padding: 26px;
+	margin: auto;
 	width: 100%;
 	max-width: 360px;
 	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
@@ -288,48 +296,4 @@
 	justify-content: flex-end;
 	gap: 8px;
 	margin-top: 18px;
-}
-
-.classroom-students {
-	display: flex;
-	flex-direction: column;
-	gap: 14px;
-}
-
-.add-form {
-	background: var(--bg-raised);
-	border: 1px solid var(--border);
-	border-radius: var(--radius-lg);
-	padding: 0;
-	overflow: hidden;
-}
-
-.add-form__legend-bar {
-	padding: 10px 18px;
-	border-bottom: 1px solid var(--border);
-	background: var(--bg-overlay);
-}
-
-.add-form__legend {
-	font-size: 0.68rem;
-	font-weight: 700;
-	letter-spacing: 0.1em;
-	text-transform: uppercase;
-	color: var(--text-secondary);
-}
-
-.add-form__body {
-	padding: 16px 18px;
-	display: flex;
-	align-items: flex-end;
-	gap: 10px;
-	flex-wrap: wrap;
-}
-
-.form-group {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	flex: 1;
-	min-width: 130px;
 }

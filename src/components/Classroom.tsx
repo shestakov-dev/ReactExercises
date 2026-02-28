@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef, useId, type SubmitEvent } from "react";
-import type React from "react";
 import { Tabs, Tab } from "./Tabs";
 import { Accordion, AccordionItem } from "./Accordion";
 import { FilterableList } from "./FilterableStudentList";
 import StudentCard from "./StudentCard";
-import "./FilterableStudentList.css";
 import "./Classroom.css";
 
 interface Student {
@@ -28,23 +26,41 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 
 	useEffect(() => {
 		const dialog = dialogRef.current;
+		if (!dialog) return;
+
+		if (open) {
+			if (!dialog.open) dialog.showModal();
+		} else {
+			if (dialog.open) dialog.close();
+		}
+	}, [open]);
+
+	useEffect(() => {
+		const dialog = dialogRef.current;
 
 		if (!dialog) {
 			return;
 		}
 
-		if (open) {
-			dialog.showModal();
-		} else {
-			dialog.close();
-		}
-	}, [open]);
-
-	useEffect(() => {
-		if (open) {
+		function handleClose() {
 			setValue("");
+			onClose();
 		}
-	}, [open]);
+
+		function handleClick(e: MouseEvent) {
+			if (dialog && e.target === dialog) {
+				dialog.close();
+			}
+		}
+
+		dialog.addEventListener("close", handleClose);
+		dialog.addEventListener("click", handleClick);
+
+		return () => {
+			dialog.removeEventListener("close", handleClose);
+			dialog.removeEventListener("click", handleClick);
+		};
+	}, [onClose]);
 
 	function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
@@ -58,19 +74,11 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 		onSubmit(parsedGrade);
 	}
 
-	function handleDialogClick(e: React.MouseEvent<HTMLDialogElement>) {
-		if (e.target === dialogRef.current) {
-			onClose();
-		}
-	}
-
 	return (
 		<dialog
 			ref={dialogRef}
 			className="modal-dialog"
-			aria-labelledby="modal-title"
-			onClose={onClose}
-			onClick={handleDialogClick}>
+			aria-labelledby="modal-title">
 			<div className="modal">
 				<h3
 					className="modal__title"
@@ -107,7 +115,7 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 						<button
 							type="button"
 							className="button"
-							onClick={onClose}>
+							onClick={() => dialogRef.current?.close()}>
 							Отказ
 						</button>
 
@@ -173,6 +181,7 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 						placeholder="Иван Петров"
 						value={name}
 						onChange={e => setName(e.target.value)}
+						maxLength={50}
 						required
 					/>
 				</div>
@@ -191,6 +200,7 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 						placeholder="11 А"
 						value={grade}
 						onChange={e => setGrade(e.target.value)}
+						maxLength={10}
 						required
 					/>
 				</div>

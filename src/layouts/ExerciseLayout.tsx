@@ -46,10 +46,7 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 				</div>
 			</header>
 
-			<div
-				id="main-content"
-				className="exercise-body"
-				tabIndex={0}>
+			<div className="exercise-body">
 				<aside
 					className="exercise-aside"
 					aria-label="Описание на задачата">
@@ -77,7 +74,9 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 								{codeExample && (
 									<pre
 										className="exercise-aside__code"
-										tabIndex={0}>
+										tabIndex={0}
+										role="region"
+										aria-label="Примерен код">
 										<code>{codeExample}</code>
 									</pre>
 								)}
@@ -97,8 +96,11 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 				</aside>
 
 				<section
+					id="main-content"
 					className="exercise-demo"
-					aria-label="Демо на задачата">
+					aria-label="Демо на задачата"
+					tabIndex={0}
+					role="region">
 					<p
 						className="exercise-demo__label"
 						aria-hidden="true">

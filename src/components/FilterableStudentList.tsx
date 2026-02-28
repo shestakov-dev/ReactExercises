@@ -29,9 +29,7 @@ export function SearchInput({
 				{label}
 			</label>
 
-			<div
-				className="search-field"
-				role="none">
+			<div className="search-field">
 				<IconSearch className="search-field__icon" />
 
 				<input

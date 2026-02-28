@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IconArrowUp, IconArrowDown, IconX } from "./Icons";
+import { IconArrowUp, IconArrowDown, IconX, IconCheck } from "./Icons";
 import "./QuizBuilder.css";
 
 interface Option {
@@ -263,15 +263,21 @@ function QuestionEditor({
 										Отговор {optionIndex + 1}
 									</label>
 
-									<input
-										id={inputId}
-										type="text"
-										className={`quiz-input option-row__input ${isCorrect ? "option-row__input--correct" : ""}`}
-										placeholder={`Отговор ${optionIndex + 1}`}
-										value={option.text}
-										onChange={e => updateOption(option.id, e.target.value)}
-										maxLength={MAX_OPTION_LENGTH}
-									/>
+									<div className="option-row__input-wrapper">
+										<input
+											id={inputId}
+											type="text"
+											className={`quiz-input option-row__input ${isCorrect ? "option-row__input--correct" : ""}`}
+											placeholder={`Отговор ${optionIndex + 1}`}
+											value={option.text}
+											onChange={e => updateOption(option.id, e.target.value)}
+											maxLength={MAX_OPTION_LENGTH}
+										/>
+										<LengthWarning
+											value={option.text}
+											max={MAX_OPTION_LENGTH}
+										/>
+									</div>
 
 									<button
 										type="button"
@@ -288,7 +294,7 @@ function QuestionEditor({
 
 				<button
 					type="button"
-					className="button button--sm button--outline quiz-add-option-button"
+					className="button button--sm quiz-add-option-button"
 					onClick={addOption}
 					disabled={question.options.length >= 6}>
 					+ Добави отговор{question.options.length >= 6 ? " (макс. 6)" : ""}
@@ -375,20 +381,20 @@ function QuestionPreview({
 									<em className="placeholder-text">(Без текст)</em>
 								)}
 								{revealed && question.correctIndexes.includes(optionIndex) && (
-									<span
+									<IconCheck
+										size={16}
 										className="preview-option__indicator preview-option__indicator--correct"
-										aria-label="Верен отговор">
-										✓
-									</span>
+										aria-label="Верен отговор"
+									/>
 								)}
 								{revealed &&
 									isChosen &&
 									!question.correctIndexes.includes(optionIndex) && (
-										<span
+										<IconX
+											size={16}
 											className="preview-option__indicator preview-option__indicator--wrong"
-											aria-label="Грешен отговор">
-											✗
-										</span>
+											aria-label="Грешен отговор"
+										/>
 									)}
 							</label>
 						);
@@ -489,7 +495,7 @@ function QuizBuilder() {
 
 				<button
 					type="button"
-					className="button"
+					className="button button--primary"
 					onClick={handleModeToggle}>
 					{isPreview ? "Редактиране" : "Преглед"}
 				</button>

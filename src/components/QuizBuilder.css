@@ -180,7 +180,7 @@
 
 .option-row {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	gap: 7px;
 }
 
@@ -189,6 +189,7 @@
 	align-items: center;
 	cursor: pointer;
 	flex-shrink: 0;
+	padding-top: 10px;
 }
 
 .option-row__check {
@@ -199,8 +200,15 @@
 	flex-shrink: 0;
 }
 
-.option-row__input {
+.option-row__input-wrapper {
 	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.option-row__input {
+	width: 100%;
 }
 
 .option-row__input--correct {
@@ -233,7 +241,7 @@
 }
 
 .placeholder-text {
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	font-style: italic;
 	font-weight: 400;
 }
@@ -344,7 +352,6 @@
 .preview-option__indicator {
 	margin-left: auto;
 	font-weight: 700;
-	font-size: 0.9rem;
 	flex-shrink: 0;
 }
 
@@ -367,13 +374,12 @@
 }
 
 .quiz-add-option-button {
-	border: 1px dashed var(--border-light);
-	color: var(--text-secondary);
-	background: transparent;
+	border: 1px solid var(--border);
+	color: var(--text-primary);
+	background: var(--bg-surface);
 }
 
 .quiz-add-option-button:hover:not(:disabled) {
-	border-style: solid;
 	border-color: var(--accent);
 	color: var(--accent);
 	background: var(--accent-dim);
@@ -384,12 +390,8 @@
 	cursor: not-allowed;
 }
 
-.option-row {
-	align-items: stretch;
-}
-
 .option-row__delete {
-	align-self: stretch;
+	align-self: flex-start;
 	height: auto;
 }
 
