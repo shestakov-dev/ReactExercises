@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { IconArrowUp, IconArrowDown, IconX, IconCheck } from "./Icons";
+import { LengthWarning } from "./LengthWarning";
 import "./QuizBuilder.css";
 
 interface Option {
@@ -19,17 +20,6 @@ type Mode = "edit" | "preview";
 const MAX_TITLE_LENGTH = 120;
 const MAX_QUESTION_LENGTH = 200;
 const MAX_OPTION_LENGTH = 150;
-
-function LengthWarning({ value, max }: { value: string; max: number }) {
-	if (value.length < max) return null;
-	return (
-		<p
-			className="length-warning"
-			role="alert">
-			Достигнат е максималният брой символи ({max}).
-		</p>
-	);
-}
 
 function QuizHeader({
 	title,

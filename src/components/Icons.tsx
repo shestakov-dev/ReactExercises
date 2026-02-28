@@ -121,3 +121,29 @@ export function IconCheck({ className, size = 16 }: IconProps) {
 		</svg>
 	);
 }
+
+export function IconAPlus({ className, size = 16 }: IconProps) {
+	return (
+		<svg
+			{...defaults}
+			width={size}
+			height={size}
+			strokeWidth="2"
+			className={className}>
+			<path d="M3 19L8 5l5 14M5 14h6M18 9v6M15 12h6" />
+		</svg>
+	);
+}
+
+export function IconTrash({ className, size = 16 }: IconProps) {
+	return (
+		<svg
+			{...defaults}
+			width={size}
+			height={size}
+			strokeWidth="2"
+			className={className}>
+			<path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" />
+		</svg>
+	);
+}

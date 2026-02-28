@@ -19,8 +19,35 @@
 	max-width: none;
 }
 
-.classroom-sort-button {
+.classroom-sort-pill {
 	align-self: flex-start;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: var(--bg-overlay);
+	color: var(--text-secondary);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-full);
+	padding: 6px 16px;
+	font-size: 0.825rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.classroom-sort-pill:hover {
+	background: var(--bg-raised);
+	color: var(--text-primary);
+}
+
+.classroom-sort-pill--active {
+	background: var(--accent-dim);
+	color: var(--accent);
+	border-color: rgba(129, 140, 248, 0.4);
+}
+
+.classroom-sort-pill--active:hover {
+	background: rgba(129, 140, 248, 0.15);
 }
 
 .add-form {
@@ -48,7 +75,7 @@
 .add-form__body {
 	padding: 16px 18px;
 	display: flex;
-	align-items: flex-end;
+	align-items: flex-start;
 	gap: 10px;
 	flex-wrap: wrap;
 }
@@ -59,6 +86,17 @@
 	gap: 4px;
 	flex: 1;
 	min-width: 130px;
+}
+
+.add-form__submit {
+	margin-top: 22px;
+}
+
+@media (max-width: 480px) {
+	.add-form__submit {
+		width: 100%;
+		margin-top: 6px;
+	}
 }
 
 .classroom-empty {
@@ -111,7 +149,7 @@
 	.student-row {
 		flex-direction: column;
 		align-items: stretch;
-		gap: 8px;
+		gap: 10px;
 	}
 
 	.student-row__card {
@@ -121,11 +159,7 @@
 	.student-row__actions {
 		width: 100%;
 		flex-direction: row;
-		justify-content: stretch;
-	}
-
-	.student-row__actions .button {
-		flex: 1;
+		justify-content: flex-end;
 	}
 }
 
@@ -166,7 +200,10 @@
 	align-items: center;
 }
 
-.student-row__actions .button {
+.student-row__actions .button--icon {
+	padding: 0;
+	width: 36px;
+	height: 36px;
 	display: flex;
 	align-items: center;
 	justify-content: center;

@@ -1,0 +1,5 @@
+.length-warning {
+	font-size: 0.75rem;
+	color: var(--red);
+	margin-top: 3px;
+}

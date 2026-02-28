@@ -3,6 +3,8 @@ import { Tabs, Tab } from "./Tabs";
 import { Accordion, AccordionItem } from "./Accordion";
 import { FilterableList } from "./FilterableStudentList";
 import StudentCard from "./StudentCard";
+import { IconAPlus, IconTrash } from "./Icons";
+import { LengthWarning } from "./LengthWarning";
 import "./Classroom.css";
 
 interface Student {
@@ -184,6 +186,10 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 						maxLength={50}
 						required
 					/>
+					<LengthWarning
+						value={name}
+						max={50}
+					/>
 				</div>
 
 				<div className="form-group">
@@ -203,11 +209,15 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 						maxLength={10}
 						required
 					/>
+					<LengthWarning
+						value={grade}
+						max={10}
+					/>
 				</div>
 
 				<button
 					type="submit"
-					className="button button--primary">
+					className="button button--primary add-form__submit">
 					Добави
 				</button>
 			</div>
@@ -244,17 +254,19 @@ function StudentRow({ student, onGrade, onDelete }: StudentRowProps) {
 				<div className="student-row__actions">
 					<button
 						type="button"
-						className="button button--sm"
+						className="button button--sm button--icon"
 						onClick={() => setModal(true)}
+						title={`Нанеси оценка на ${student.name}`}
 						aria-label={`Нанеси оценка на ${student.name}`}>
-						Нанеси оценка
+						<IconAPlus />
 					</button>
 					<button
 						type="button"
-						className="button button--sm button--danger"
+						className="button button--sm button--danger button--icon"
 						onClick={() => onDelete(student.id)}
+						title={`Изтрий ${student.name}`}
 						aria-label={`Изтрий ${student.name}`}>
-						Изтрий
+						<IconTrash />
 					</button>
 				</div>
 			</div>
@@ -392,7 +404,7 @@ function Classroom() {
 						{students.length > 1 && (
 							<button
 								type="button"
-								className={`button button--sm classroom-sort-button ${sortByAvg ? "button--primary" : ""}`}
+								className={`classroom-sort-pill ${sortByAvg ? "classroom-sort-pill--active" : ""}`}
 								onClick={() => setSortByAvg(value => !value)}
 								aria-pressed={sortByAvg}>
 								{sortByAvg ? "Сортирано по успех" : "Сортирай по успех"}
