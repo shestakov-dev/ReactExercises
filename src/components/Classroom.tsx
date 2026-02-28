@@ -22,6 +22,16 @@ interface GradeModalProps {
 	onSubmit: (score: number) => void;
 }
 
+function calculateAverage(numbers: number[]): number {
+	if (numbers.length === 0) {
+		return 0;
+	}
+
+	const total = numbers.reduce((sum, current) => sum + current, 0);
+
+	return total / numbers.length;
+}
+
 function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 	const [value, setValue] = useState("");
 	const inputId = useId();
@@ -241,13 +251,7 @@ interface StudentRowProps {
 function StudentRow({ student, onGrade, onDelete }: StudentRowProps) {
 	const [modal, setModal] = useState(false);
 
-	const averageScore =
-		student.scores.length > 0
-			? student.scores.reduce(
-					(totalScore, currentScore) => totalScore + currentScore,
-					0,
-				) / student.scores.length
-			: 0;
+	const averageScore = calculateAverage(student.scores);
 
 	return (
 		<>
@@ -296,14 +300,8 @@ function StudentRow({ student, onGrade, onDelete }: StudentRowProps) {
 
 function ClassStats({ students }: { students: Student[] }) {
 	const allScores = students.flatMap(student => student.scores);
-	const averageScore =
-		allScores.length > 0
-			? allScores.reduce(
-					(totalScore, currentScore) => totalScore + currentScore,
-					0,
-				) / allScores.length
-			: null;
 
+	const averageScore = allScores.length > 0 ? calculateAverage(allScores) : null;
 	const maxScore = allScores.length > 0 ? Math.max(...allScores) : null;
 	const minScore = allScores.length > 0 ? Math.min(...allScores) : null;
 
@@ -399,18 +397,10 @@ export function Classroom() {
 		);
 	}
 
-	const studentAverageScore = (student: Student) =>
-		student.scores.length > 0
-			? student.scores.reduce(
-					(totalScore, currentScore) => totalScore + currentScore,
-					0,
-				) / student.scores.length
-			: 0;
-
 	const sortedStudents = sortByAvg
 		? [...students].sort(
 				(student1, student2) =>
-					studentAverageScore(student2) - studentAverageScore(student1),
+					calculateAverage(student2.scores) - calculateAverage(student1.scores),
 			)
 		: students;
 
