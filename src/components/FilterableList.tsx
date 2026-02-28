@@ -1,7 +1,7 @@
 import { useState, useId, type ReactNode } from "react";
 import { IconSearch } from "./Icons";
 
-import "./FilterableStudentList.css";
+import "./FilterableList.css";
 
 interface SearchInputProps {
 	value: string;
