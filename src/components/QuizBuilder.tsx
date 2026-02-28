@@ -319,7 +319,11 @@ function QuestionPreview({
 			<p className="quiz-preview__number">Въпрос {index + 1}</p>
 
 			<p className="quiz-preview__text">
-				{question.text ?? <span className="placeholder-text">(Без текст)</span>}
+				{question.text.trim() ? (
+					question.text
+				) : (
+					<span className="placeholder-text">(Без текст)</span>
+				)}
 			</p>
 
 			{question.options.length > 0 && (
@@ -344,10 +348,10 @@ function QuestionPreview({
 									disabled={revealed}
 								/>
 
-								{option.text ? (
+								{option.text.trim() ? (
 									option.text
 								) : (
-									<em className="placeholder-text">(Без текст)</em>
+									<span className="placeholder-text">(Без текст)</span>
 								)}
 
 								{revealed && question.correctIndexes.includes(optionIndex) && (
@@ -467,7 +471,11 @@ export function QuizBuilder() {
 					<div className="quiz-header-bar__input-row">
 						{isPreview ? (
 							<p className="quiz-title-preview">
-								{title ?? <span className="placeholder-text">(Без заглавие)</span>}
+								{title.trim() ? (
+									title
+								) : (
+									<span className="placeholder-text">(Без заглавие)</span>
+								)}
 							</p>
 						) : (
 							<input
