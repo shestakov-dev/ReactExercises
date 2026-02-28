@@ -26,22 +26,41 @@ export function Tabs({ children }: { children: ReactNode }) {
 	function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>, index: number) {
 		if (e.key === "ArrowRight") {
 			e.preventDefault();
+
 			const next = (index + 1) % tabs.length;
+
 			setActive(next);
+
 			tabRefs.current[next]?.focus();
+			tabRefs.current[next]?.scrollIntoView({
+				inline: "nearest",
+				block: "nearest",
+			});
 		} else if (e.key === "ArrowLeft") {
 			e.preventDefault();
+
 			const prev = (index - 1 + tabs.length) % tabs.length;
+
 			setActive(prev);
+
 			tabRefs.current[prev]?.focus();
+			tabRefs.current[prev]?.scrollIntoView({
+				inline: "nearest",
+				block: "nearest",
+			});
 		} else if (e.key === "Home") {
 			e.preventDefault();
+
 			setActive(0);
+
 			tabRefs.current[0]?.focus();
 		} else if (e.key === "End") {
 			e.preventDefault();
+
 			const last = tabs.length - 1;
+
 			setActive(last);
+
 			tabRefs.current[last]?.focus();
 		}
 	}
@@ -65,7 +84,14 @@ export function Tabs({ children }: { children: ReactNode }) {
 						aria-controls={`tabpanel-${index}`}
 						tabIndex={active === index ? 0 : -1}
 						className="tabs__button"
-						onClick={() => setActive(index)}
+						onClick={() => {
+							setActive(index);
+
+							tabRefs.current[index]?.scrollIntoView({
+								inline: "nearest",
+								block: "nearest",
+							});
+						}}
 						onKeyDown={e => handleKeyDown(e, index)}>
 						{tab.props.label}
 					</button>
@@ -78,7 +104,6 @@ export function Tabs({ children }: { children: ReactNode }) {
 					role="tabpanel"
 					id={`tabpanel-${index}`}
 					aria-labelledby={`tab-${index}`}
-					tabIndex={-1}
 					hidden={active !== index}
 					className="tabs__panel">
 					{tab.props.children}

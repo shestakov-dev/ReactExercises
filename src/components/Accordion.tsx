@@ -7,7 +7,7 @@ import {
 	type KeyboardEvent,
 } from "react";
 import "./Accordion.css";
-import IconChevronDown from "../assets/icons/IconChevronDown";
+import { IconChevronDown } from "./Icons";
 
 export interface AccordionItemProps {
 	title: string;

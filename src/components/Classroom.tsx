@@ -1,4 +1,5 @@
-import { useState, useId, type SubmitEvent } from "react";
+import { useState, useEffect, useRef, useId, type SubmitEvent } from "react";
+import type React from "react";
 import { Tabs, Tab } from "./Tabs";
 import { Accordion, AccordionItem } from "./Accordion";
 import { FilterableList } from "./FilterableStudentList";
@@ -23,10 +24,27 @@ interface GradeModalProps {
 function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 	const [value, setValue] = useState("");
 	const inputId = useId();
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
-	if (!open) {
-		return null;
-	}
+	useEffect(() => {
+		const dialog = dialogRef.current;
+
+		if (!dialog) {
+			return;
+		}
+
+		if (open) {
+			dialog.showModal();
+		} else {
+			dialog.close();
+		}
+	}, [open]);
+
+	useEffect(() => {
+		if (open) {
+			setValue("");
+		}
+	}, [open]);
 
 	function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
@@ -38,20 +56,21 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 		}
 
 		onSubmit(parsedGrade);
-		setValue("");
+	}
+
+	function handleDialogClick(e: React.MouseEvent<HTMLDialogElement>) {
+		if (e.target === dialogRef.current) {
+			onClose();
+		}
 	}
 
 	return (
-		<div
-			className="modal-overlay"
-			role="dialog"
-			aria-modal="true"
+		<dialog
+			ref={dialogRef}
+			className="modal-dialog"
 			aria-labelledby="modal-title"
-			onClick={e => {
-				if (e.target === e.currentTarget) {
-					onClose();
-				}
-			}}>
+			onClose={onClose}
+			onClick={handleDialogClick}>
 			<div className="modal">
 				<h3
 					className="modal__title"
@@ -66,7 +85,7 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 						<label
 							htmlFor={inputId}
 							className="form-label">
-							Оценка (2 – 6)
+							Оценка (2 - 6)
 						</label>
 
 						<input
@@ -100,7 +119,7 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 					</div>
 				</form>
 			</div>
-		</div>
+		</dialog>
 	);
 }
 

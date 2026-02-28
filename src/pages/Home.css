@@ -6,7 +6,6 @@
 	justify-content: center;
 }
 
-/* ---- Exercise list ---- */
 .home-main {
 	padding: 32px 16px 56px;
 	max-width: 860px;
@@ -26,7 +25,6 @@
 	gap: 6px;
 }
 
-/* ---- Exercise card ---- */
 .exercise-card {
 	display: grid;
 	grid-template-columns: 44px 1fr auto;

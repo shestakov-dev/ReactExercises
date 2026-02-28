@@ -36,7 +36,7 @@
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 }
 
 .add-form__body {
@@ -105,6 +105,7 @@
 	.student-row {
 		flex-direction: column;
 		align-items: stretch;
+		gap: 8px;
 	}
 
 	.student-row__card {
@@ -113,7 +114,13 @@
 
 	.student-row__actions {
 		width: 100%;
-		justify-content: flex-end;
+		justify-content: stretch;
+	}
+
+	.student-row__actions .button {
+		flex: 1;
+		justify-content: center;
+		height: 36px;
 	}
 }
 
@@ -240,15 +247,17 @@
 	color: var(--text-primary);
 }
 
-.modal-overlay {
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.6);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 200;
-	padding: 16px;
+.modal-dialog {
+	border: none;
+	border-radius: var(--radius-lg);
+	padding: 0;
+	background: transparent;
+	max-width: min(90vw, 400px);
+	width: 100%;
+}
+
+.modal-dialog::backdrop {
+	background: rgba(0, 0, 0, 0.55);
 }
 
 .modal {
@@ -306,7 +315,7 @@
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 }
 
 .add-form__body {

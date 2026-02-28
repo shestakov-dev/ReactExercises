@@ -123,7 +123,7 @@ code {
 }
 
 .skip-link {
-	position: absolute;
+	position: fixed;
 	top: -100px;
 	left: 8px;
 	background: #ffffff;
@@ -134,7 +134,7 @@ code {
 	border-radius: var(--radius);
 	font-weight: 700;
 	font-size: 0.875rem;
-	transition: top 0.15s;
+	transition: top 0.2s ease;
 }
 
 .skip-link:focus {
@@ -193,6 +193,12 @@ code {
 .button--primary:hover {
 	background: var(--accent-hover);
 	border-color: var(--accent-hover);
+}
+
+.button--outline {
+	border-color: var(--border-light);
+	background: transparent;
+	color: var(--text-secondary);
 }
 
 .button--danger {

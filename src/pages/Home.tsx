@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { difficultyClassModifier, exercises } from "../config/exercises";
-import IconArrowRight from "../assets/icons/IconArrowRight";
+import { IconArrowRight } from "../components/Icons";
 import "./Home.css";
 
 function Home() {
 	return (
 		<main className="home-page">
 			<div className="home-main">
-				<nav id="main-content" tabIndex={-1} aria-label="Упражнения">
+				<nav aria-label="Упражнения">
 					<ol className="exercises-list">
 						{exercises.map(exercise => (
 							<li key={exercise.id}>

@@ -1,6 +1,6 @@
 import { useState, useId, type ReactNode } from "react";
 import StudentCard from "./StudentCard";
-import IconSearch from "../assets/icons/IconSearch";
+import { IconSearch } from "./Icons";
 import "./FilterableStudentList.css";
 
 interface SearchInputProps {
@@ -29,7 +29,9 @@ export function SearchInput({
 				{label}
 			</label>
 
-			<div className="search-field">
+			<div
+				className="search-field"
+				role="none">
 				<IconSearch className="search-field__icon" />
 
 				<input
@@ -72,7 +74,8 @@ export function FilterableList<T>({
 }: FilterableListProps<T>) {
 	const [query, setQuery] = useState("");
 
-	const filtered = items.filter(item => filterFn(item, query));
+	const trimmedQuery = query.trim();
+	const filtered = items.filter(item => filterFn(item, trimmedQuery));
 
 	return (
 		<div className="filterable-list">
@@ -104,8 +107,8 @@ export function FilterableList<T>({
 					className="filterable-list__empty"
 					role="status">
 					{noResultsMessage
-						? noResultsMessage(query)
-						: `Няма намерени резултати за "${query}"`}
+						? noResultsMessage(trimmedQuery)
+						: `Няма намерени резултати за "${trimmedQuery}"`}
 				</p>
 			) : (
 				<ul

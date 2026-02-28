@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import "./ExerciseLayout.css";
 import { difficultyClassModifier, getExerciseById } from "../config/exercises";
-import IconArrowLeft from "../assets/icons/IconArrowLeft";
+import { IconArrowLeft } from "../components/Icons";
 
 interface ExerciseLayoutProps {
 	exerciseId: number;
@@ -19,6 +19,12 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 	const { id, title, difficulty, description, hint, codeExample } = exercise;
 	return (
 		<div className="exercise-page">
+			<a
+				href="#main-content"
+				className="skip-link">
+				Прескочи към съдържанието
+			</a>
+
 			<header className="exercise-topbar">
 				<div className="exercise-topbar__inner">
 					<nav aria-label="Навигация">
@@ -27,7 +33,7 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 							className="exercise-topbar__back"
 							aria-label="Назад към всички упражнения">
 							<IconArrowLeft />
-							Всички упражнения
+							<span className="exercise-topbar__back-label">Всички упражнения</span>
 						</Link>
 					</nav>
 
@@ -40,7 +46,10 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 				</div>
 			</header>
 
-			<div className="exercise-body">
+			<div
+				id="main-content"
+				className="exercise-body"
+				tabIndex={0}>
 				<aside
 					className="exercise-aside"
 					aria-label="Описание на задачата">
@@ -66,7 +75,9 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 							<dd className="exercise-aside__desc">
 								<p>{description}</p>
 								{codeExample && (
-									<pre className="exercise-aside__code" tabIndex={-1}>
+									<pre
+										className="exercise-aside__code"
+										tabIndex={0}>
 										<code>{codeExample}</code>
 									</pre>
 								)}

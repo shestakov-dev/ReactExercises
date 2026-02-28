@@ -1,7 +1,5 @@
-import { useState, useId } from "react";
-import IconArrowUp from "../assets/icons/IconArrowUp";
-import IconArrowDown from "../assets/icons/IconArrowDown";
-import IconX from "../assets/icons/IconX";
+import { useState } from "react";
+import { IconArrowUp, IconArrowDown, IconX } from "./Icons";
 import "./QuizBuilder.css";
 
 interface Option {
@@ -22,46 +20,45 @@ const MAX_TITLE_LENGTH = 120;
 const MAX_QUESTION_LENGTH = 200;
 const MAX_OPTION_LENGTH = 150;
 
+function LengthWarning({ value, max }: { value: string; max: number }) {
+	if (value.length < max) return null;
+	return (
+		<p
+			className="length-warning"
+			role="alert">
+			Достигнат е максималният брой символи ({max}).
+		</p>
+	);
+}
+
 function QuizHeader({
 	title,
 	onChange,
-	isPreview,
 }: {
 	title: string;
 	onChange: (v: string) => void;
-	isPreview: boolean;
 }) {
-	const id = useId();
-
 	return (
 		<div className="quiz-header-bar__field">
-			<p className="quiz-header-bar__label">
-				{isPreview ? "Заглавие" : "Заглавие на теста"}
-			</p>
+			<label
+				htmlFor="quiz-title-input"
+				className="quiz-header-bar__label">
+				Заглавие на теста
+			</label>
+			<input
+				id="quiz-title-input"
+				type="text"
+				className="quiz-title-input"
+				value={title}
+				onChange={e => onChange(e.target.value)}
+				placeholder="Въведете заглавие..."
+				maxLength={MAX_TITLE_LENGTH}
+			/>
 
-			{isPreview ? (
-				<p className="quiz-title-preview">
-					{title ?? <span className="placeholder-text">(Без заглавие)</span>}
-				</p>
-			) : (
-				<>
-					<label
-						htmlFor={id}
-						className="visually-hidden">
-						Заглавие
-					</label>
-
-					<input
-						id={id}
-						type="text"
-						className="quiz-title-input"
-						value={title}
-						onChange={e => onChange(e.target.value)}
-						placeholder="Въведете заглавие..."
-						maxLength={MAX_TITLE_LENGTH}
-					/>
-				</>
-			)}
+			<LengthWarning
+				value={title}
+				max={MAX_TITLE_LENGTH}
+			/>
 		</div>
 	);
 }
@@ -225,6 +222,11 @@ function QuestionEditor({
 						onChange={e => update({ text: e.target.value })}
 						maxLength={MAX_QUESTION_LENGTH}
 					/>
+
+					<LengthWarning
+						value={question.text}
+						max={MAX_QUESTION_LENGTH}
+					/>
 				</div>
 
 				{question.options.length > 0 && (
@@ -242,7 +244,7 @@ function QuestionEditor({
 									<label
 										htmlFor={checkId}
 										className="option-row__check-label"
-										title="Верен отговор">
+										title={isCorrect ? "Верен отговор" : "Маркирай като верен"}>
 										<input
 											type="checkbox"
 											id={checkId}
@@ -251,7 +253,7 @@ function QuestionEditor({
 											onChange={() => toggleCorrect(optionIndex)}
 										/>
 										<span className="visually-hidden">
-											{isCorrect ? "Верен" : "Не е верен"}, отговор {optionIndex + 1}
+											{isCorrect ? "Верен" : "Неверен"}, отговор {optionIndex + 1}
 										</span>
 									</label>
 
@@ -273,7 +275,7 @@ function QuestionEditor({
 
 									<button
 										type="button"
-										className="button button--sm button--ghost"
+										className="button button--sm button--ghost option-row__delete"
 										onClick={() => deleteOption(option.id)}
 										aria-label={`Изтрий отговор ${optionIndex + 1}`}>
 										<IconX />
@@ -286,7 +288,7 @@ function QuestionEditor({
 
 				<button
 					type="button"
-					className="button button--sm"
+					className="button button--sm button--outline quiz-add-option-button"
 					onClick={addOption}
 					disabled={question.options.length >= 6}>
 					+ Добави отговор{question.options.length >= 6 ? " (макс. 6)" : ""}
@@ -296,52 +298,44 @@ function QuestionEditor({
 	);
 }
 
-type CheckState = "unchecked" | "checked" | "revealed";
-
 function QuestionPreview({
 	question,
 	index,
+	revealed,
 }: {
 	question: Question;
 	index: number;
+	revealed: boolean;
 }) {
 	const [chosen, setChosen] = useState<number[]>([]);
-	const [state, setState] = useState<CheckState>("unchecked");
 
-	// Only show options with non-empty text
-	const visibleOptions = question.options
-		.map((opt, originalIndex) => ({ ...opt, originalIndex }))
-		.filter(opt => opt.text.trim() !== "");
+	function toggle(optionIndex: number) {
+		if (revealed) {
+			return;
+		}
 
-	function toggle(originalIndex: number) {
-		if (state === "revealed") return;
-		setChosen(prev =>
-			prev.includes(originalIndex)
-				? prev.filter(i => i !== originalIndex)
-				: [...prev, originalIndex],
+		setChosen(previousChosen =>
+			previousChosen.includes(optionIndex)
+				? previousChosen.filter(currentIndex => currentIndex !== optionIndex)
+				: [...previousChosen, optionIndex],
 		);
 	}
 
-	function handleCheck() {
-		setState("revealed");
-	}
-
-	function handleReset() {
-		setChosen([]);
-		setState("unchecked");
-	}
-
-	function getOptionClass(originalIndex: number) {
-		const isChosen = chosen.includes(originalIndex);
-		const isCorrect = question.correctIndexes.includes(originalIndex);
-
-		if (state !== "revealed") {
+	function getOptionClass(optionIndex: number) {
+		const isChosen = chosen.includes(optionIndex);
+		const isCorrect = question.correctIndexes.includes(optionIndex);
+		if (!revealed) {
 			return isChosen ? "preview-option--chosen" : "";
 		}
 
-		if (isCorrect && isChosen) return "preview-option--correct";
-		if (isCorrect && !isChosen) return "preview-option--missed";
-		if (!isCorrect && isChosen) return "preview-option--wrong";
+		if (isCorrect && isChosen) {
+			return "preview-option--correct";
+		} else if (isCorrect && !isChosen) {
+			return "preview-option--missed";
+		} else if (!isCorrect && isChosen) {
+			return "preview-option--wrong";
+		}
+
 		return "";
 	}
 
@@ -355,68 +349,51 @@ function QuestionPreview({
 				{question.text || <span className="placeholder-text">(Без текст)</span>}
 			</p>
 
-			{visibleOptions.length > 0 && (
-				<>
-					<div
-						className="preview-options"
-						role="group"
-						aria-label="Отговори">
-						{visibleOptions.map(option => {
-							const optClass = getOptionClass(option.originalIndex);
-							const isChosen = chosen.includes(option.originalIndex);
+			{question.options.length > 0 && (
+				<div
+					className="preview-options"
+					role="group"
+					aria-label="Отговори">
+					{question.options.map((option, optionIndex) => {
+						const optClass = getOptionClass(optionIndex);
+						const isChosen = chosen.includes(optionIndex);
 
-							return (
-								<label
-									key={option.id}
-									className={`preview-option ${optClass}`}>
-									<input
-										type="checkbox"
-										className="preview-option__check"
-										checked={isChosen}
-										onChange={() => toggle(option.originalIndex)}
-										disabled={state === "revealed"}
-									/>
-									{option.text}
-									{state === "revealed" &&
-										question.correctIndexes.includes(option.originalIndex) && (
-											<span
-												className="preview-option__indicator preview-option__indicator--correct"
-												aria-label="Верен отговор">
-												✓
-											</span>
-										)}
-									{state === "revealed" &&
-										isChosen &&
-										!question.correctIndexes.includes(option.originalIndex) && (
-											<span
-												className="preview-option__indicator preview-option__indicator--wrong"
-												aria-label="Грешен отговор">
-												✗
-											</span>
-										)}
-								</label>
-							);
-						})}
-					</div>
-
-					<div className="preview-actions">
-						{state !== "revealed" ? (
-							<button
-								type="button"
-								className="button button--sm button--primary"
-								onClick={handleCheck}>
-								Провери
-							</button>
-						) : (
-							<button
-								type="button"
-								className="button button--sm"
-								onClick={handleReset}>
-								Нулирай
-							</button>
-						)}
-					</div>
-				</>
+						return (
+							<label
+								key={option.id}
+								className={`preview-option ${optClass}`}>
+								<input
+									type="checkbox"
+									className="preview-option__check"
+									checked={isChosen}
+									onChange={() => toggle(optionIndex)}
+									disabled={revealed}
+								/>
+								{option.text ? (
+									option.text
+								) : (
+									<em className="placeholder-text">(Без текст)</em>
+								)}
+								{revealed && question.correctIndexes.includes(optionIndex) && (
+									<span
+										className="preview-option__indicator preview-option__indicator--correct"
+										aria-label="Верен отговор">
+										✓
+									</span>
+								)}
+								{revealed &&
+									isChosen &&
+									!question.correctIndexes.includes(optionIndex) && (
+										<span
+											className="preview-option__indicator preview-option__indicator--wrong"
+											aria-label="Грешен отговор">
+											✗
+										</span>
+									)}
+							</label>
+						);
+					})}
+				</div>
 			)}
 		</article>
 	);
@@ -426,18 +403,19 @@ function QuizBuilder() {
 	const [mode, setMode] = useState<Mode>("edit");
 	const [title, setTitle] = useState("Нов тест");
 	const [questions, setQuestions] = useState<Question[]>([]);
+	const [quizRevealed, setQuizRevealed] = useState(false);
+	const [resetKey, setResetKey] = useState(0);
 
 	function addQuestion() {
-		const id = crypto.randomUUID();
-
 		setQuestions(previousQuestions => [
 			...previousQuestions,
-			{ id, text: "", options: [], correctIndexes: [] },
+			{ id: crypto.randomUUID(), text: "", options: [], correctIndexes: [] },
 		]);
 	}
+
 	function updateQuestion(id: string, updated: Question) {
 		setQuestions(previousQuestions =>
-			previousQuestions.map(q => (q.id === id ? updated : q)),
+			previousQuestions.map(question => (question.id === id ? updated : question)),
 		);
 	}
 
@@ -449,7 +427,9 @@ function QuizBuilder() {
 
 	function moveQuestion(id: string, direction: "up" | "down") {
 		setQuestions(previousQuestions => {
-			const questionIndex = previousQuestions.findIndex(q => q.id === id);
+			const questionIndex = previousQuestions.findIndex(
+				question => question.id === id,
+			);
 
 			if (questionIndex < 0) {
 				return previousQuestions;
@@ -469,21 +449,48 @@ function QuizBuilder() {
 		});
 	}
 
+	function handleCheckAll() {
+		setQuizRevealed(true);
+	}
+
+	function handleResetAll() {
+		setQuizRevealed(false);
+		setResetKey(key => key + 1);
+	}
+
+	function handleModeToggle() {
+		setMode(mode => {
+			if (mode === "preview") {
+				setQuizRevealed(false);
+				setResetKey(key => key + 1);
+			}
+
+			return mode === "edit" ? "preview" : "edit";
+		});
+	}
+
 	const isPreview = mode === "preview";
 
 	return (
 		<div className="quiz-builder">
 			<div className="quiz-header-bar">
-				<QuizHeader
-					title={title}
-					onChange={setTitle}
-					isPreview={isPreview}
-				/>
+				{isPreview ? (
+					<div className="quiz-header-bar__preview-title">
+						<p className="quiz-title-preview">
+							{title ?? <span className="placeholder-text">(Без заглавие)</span>}
+						</p>
+					</div>
+				) : (
+					<QuizHeader
+						title={title}
+						onChange={setTitle}
+					/>
+				)}
 
 				<button
 					type="button"
-					className={`button${isPreview ? " button--primary" : ""}`}
-					onClick={() => setMode(m => (m === "edit" ? "preview" : "edit"))}>
+					className="button"
+					onClick={handleModeToggle}>
 					{isPreview ? "Редактиране" : "Преглед"}
 				</button>
 			</div>
@@ -500,9 +507,10 @@ function QuizBuilder() {
 				{questions.map((question, index) =>
 					isPreview ? (
 						<QuestionPreview
-							key={question.id}
+							key={`${question.id}-${resetKey}`}
 							question={question}
 							index={index}
+							revealed={quizRevealed}
 						/>
 					) : (
 						<QuestionEditor
@@ -525,6 +533,26 @@ function QuizBuilder() {
 						onClick={addQuestion}>
 						+ Нов въпрос
 					</button>
+				)}
+
+				{isPreview && questions.length > 0 && (
+					<div className="quiz-check-bar">
+						{!quizRevealed ? (
+							<button
+								type="button"
+								className="button button--primary"
+								onClick={handleCheckAll}>
+								Провери теста
+							</button>
+						) : (
+							<button
+								type="button"
+								className="button"
+								onClick={handleResetAll}>
+								Нулирай
+							</button>
+						)}
+					</div>
 				)}
 			</main>
 

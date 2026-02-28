@@ -62,8 +62,9 @@
 	flex: 1;
 }
 
-@media (max-width: 480px) {
-	.exercise-topbar__label {
+@media (max-width: 600px) {
+	.exercise-topbar__label,
+	.exercise-topbar__sep {
 		display: none;
 	}
 }
@@ -235,6 +236,11 @@
 	min-width: 0;
 }
 
+.exercise-body:focus {
+	outline: 2px solid var(--accent);
+	outline-offset: -2px;
+}
+
 .exercise-demo:focus {
 	outline: none;
 }
@@ -251,5 +257,15 @@
 @media (max-width: 860px) {
 	.exercise-demo {
 		padding: 20px 16px;
+	}
+}
+
+.exercise-topbar__back-label {
+	display: inline;
+}
+
+@media (max-width: 360px) {
+	.exercise-topbar__back-label {
+		display: none;
 	}
 }
