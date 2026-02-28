@@ -5,6 +5,7 @@ import {
 	type ReactNode,
 	type ReactElement,
 	type KeyboardEvent,
+	type FC,
 } from "react";
 
 import "./Tabs.css";
@@ -14,9 +15,7 @@ export interface TabProps {
 	children: ReactNode;
 }
 
-export function Tab(_props: TabProps) {
-	return null;
-}
+export const Tab: FC<TabProps> = () => null;
 
 export function Tabs({ children }: { children: ReactNode }) {
 	const [active, setActive] = useState(0);

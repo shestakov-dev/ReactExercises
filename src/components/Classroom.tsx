@@ -241,10 +241,12 @@ interface StudentRowProps {
 function StudentRow({ student, onGrade, onDelete }: StudentRowProps) {
 	const [modal, setModal] = useState(false);
 
-	const avg =
+	const averageScore =
 		student.scores.length > 0
-			? student.scores.reduce((acc, score) => acc + score, 0) /
-				student.scores.length
+			? student.scores.reduce(
+					(totalScore, currentScore) => totalScore + currentScore,
+					0,
+				) / student.scores.length
 			: 0;
 
 	return (
@@ -254,7 +256,7 @@ function StudentRow({ student, onGrade, onDelete }: StudentRowProps) {
 					<StudentCard
 						name={student.name}
 						grade={student.grade}
-						averageScore={avg}
+						averageScore={averageScore}
 					/>
 				</div>
 
@@ -296,11 +298,24 @@ function ClassStats({ students }: { students: Student[] }) {
 	const allScores = students.flatMap(student => student.scores);
 	const averageScore =
 		allScores.length > 0
-			? allScores.reduce((a, b) => a + b, 0) / allScores.length
+			? allScores.reduce(
+					(totalScore, currentScore) => totalScore + currentScore,
+					0,
+				) / allScores.length
 			: null;
 
 	const maxScore = allScores.length > 0 ? Math.max(...allScores) : null;
 	const minScore = allScores.length > 0 ? Math.min(...allScores) : null;
+
+	const stats = [
+		{ label: "Ученици", value: students.length },
+		{
+			label: "Среден успех",
+			value: averageScore !== null ? averageScore.toFixed(2) : "–",
+		},
+		{ label: "Най-висока", value: maxScore !== null ? maxScore.toFixed(2) : "–" },
+		{ label: "Най-ниска", value: minScore !== null ? minScore.toFixed(2) : "–" },
+	];
 
 	return (
 		<aside
@@ -309,12 +324,7 @@ function ClassStats({ students }: { students: Student[] }) {
 			<h3 className="class-stats__heading">Статистики</h3>
 
 			<dl className="class-stats__grid">
-				{[
-					["Ученици", students.length],
-					["Среден успех", averageScore !== null ? averageScore.toFixed(2) : "–"],
-					["Най-висока", maxScore !== null ? maxScore.toFixed(2) : "–"],
-					["Най-ниска", minScore !== null ? minScore.toFixed(2) : "–"],
-				].map(([label, value]) => (
+				{stats.map(({ label, value }) => (
 					<div
 						key={label}
 						className="class-stats__item">
@@ -391,13 +401,16 @@ export function Classroom() {
 
 	const studentAverageScore = (student: Student) =>
 		student.scores.length > 0
-			? student.scores.reduce((acc, score) => acc + score, 0) /
-				student.scores.length
+			? student.scores.reduce(
+					(totalScore, currentScore) => totalScore + currentScore,
+					0,
+				) / student.scores.length
 			: 0;
 
 	const sortedStudents = sortByAvg
 		? [...students].sort(
-				(a, b) => studentAverageScore(b) - studentAverageScore(a),
+				(student1, student2) =>
+					studentAverageScore(student2) - studentAverageScore(student1),
 			)
 		: students;
 
@@ -435,7 +448,7 @@ export function Classroom() {
 							keyFn={student => student.id}
 							searchLabel="Търси по име"
 							searchPlaceholder="Име на ученик"
-							emptyAllMessage="Все още няма добавени ученици."
+							emptyListMessage="Все още няма добавени ученици."
 							noResultsMessage={query => `Няма намерени ученици за "${query}"`}
 							listAriaLabel="Списък с ученици"
 						/>

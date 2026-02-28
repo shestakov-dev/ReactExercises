@@ -57,13 +57,19 @@ function QuizHeader({
 
 function QuizStats({ questions }: { questions: Question[] }) {
 	const totalOptions = questions.reduce(
-		(acc, question) => acc + question.options.length,
+		(total, question) => total + question.options.length,
 		0,
 	);
 
 	const noCorrect = questions.filter(
 		question => question.correctIndexes.length === 0,
 	).length;
+
+	const stats = [
+		{ label: "Въпроси", value: String(questions.length), warn: false },
+		{ label: "Общо отговори", value: String(totalOptions), warn: false },
+		{ label: "Без верен отговор", value: String(noCorrect), warn: noCorrect > 0 },
+	];
 
 	return (
 		<aside
@@ -72,18 +78,15 @@ function QuizStats({ questions }: { questions: Question[] }) {
 			<h3 className="quiz-stats__heading">Статистики</h3>
 
 			<dl className="quiz-stats__grid">
-				{(
-					[
-						["Въпроси", String(questions.length), false],
-						["Общо отговори", String(totalOptions), false],
-						["Без верен отговор", String(noCorrect), noCorrect > 0],
-					] as [string, string, boolean][]
-				).map(([label, val, warn]) => (
+				{stats.map(({ label, value, warn }) => (
 					<div
 						key={label}
 						className="quiz-stats__item">
 						<dt className="quiz-stats__item-label">{label}</dt>
-						<dd className={`quiz-stats__item-value${warn ? " warn" : ""}`}>{val}</dd>
+
+						<dd className={`quiz-stats__item-value${warn ? " warn" : ""}`}>
+							{value}
+						</dd>
 					</div>
 				))}
 			</dl>
@@ -104,7 +107,7 @@ function QuestionEditor({
 	index: number;
 	onUpdate: (id: string, question: Question) => void;
 	onDelete: (id: string) => void;
-	onMove: (id: string, dir: "up" | "down") => void;
+	onMove: (id: string, direction: "up" | "down") => void;
 	isFirst: boolean;
 	isLast: boolean;
 }) {
@@ -145,12 +148,12 @@ function QuestionEditor({
 		update({ options: newOptions, correctIndexes: correct });
 	}
 
-	function toggleCorrect(index: number) {
-		const newCorrectIndexes = question.correctIndexes.includes(index)
+	function toggleCorrect(indexToToggle: number) {
+		const newCorrectIndexes = question.correctIndexes.includes(indexToToggle)
 			? question.correctIndexes.filter(
-					currentCorrectIndex => currentCorrectIndex !== index,
+					currentCorrectIndex => currentCorrectIndex !== indexToToggle,
 				)
-			: [...question.correctIndexes, index];
+			: [...question.correctIndexes, indexToToggle];
 
 		update({ correctIndexes: newCorrectIndexes });
 	}
@@ -442,17 +445,21 @@ export function QuizBuilder() {
 				return previousQuestions;
 			}
 
-			const swap = direction === "up" ? questionIndex - 1 : questionIndex + 1;
+			const targetIndex =
+				direction === "up" ? questionIndex - 1 : questionIndex + 1;
 
-			if (swap < 0 || swap >= previousQuestions.length) {
+			if (targetIndex < 0 || targetIndex >= previousQuestions.length) {
 				return previousQuestions;
 			}
 
-			const next = [...previousQuestions];
+			const nextQuestions = [...previousQuestions];
 
-			[next[questionIndex], next[swap]] = [next[swap], next[questionIndex]];
+			[nextQuestions[questionIndex], nextQuestions[targetIndex]] = [
+				nextQuestions[targetIndex],
+				nextQuestions[questionIndex],
+			];
 
-			return next;
+			return nextQuestions;
 		});
 	}
 
@@ -467,13 +474,14 @@ export function QuizBuilder() {
 	}
 
 	function handleModeToggle() {
-		setMode(mode => {
-			if (mode === "preview") {
+		setMode(currentMode => {
+			if (currentMode === "preview") {
 				setQuizRevealed(false);
+
 				setResetKey(key => key + 1);
 			}
 
-			return mode === "edit" ? "preview" : "edit";
+			return currentMode === "edit" ? "preview" : "edit";
 		});
 	}
 

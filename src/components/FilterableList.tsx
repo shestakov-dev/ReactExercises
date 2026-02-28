@@ -1,7 +1,7 @@
 import { useState, useId, type ReactNode } from "react";
 import { IconSearch } from "./Icons";
 
-import "./FilterableList.css";
+import "./FilterableStudentList.css";
 
 interface SearchInputProps {
 	value: string;
@@ -49,7 +49,7 @@ interface FilterableListProps<T> {
 	keyFn: (item: T) => string | number;
 	searchLabel?: string;
 	searchPlaceholder?: string;
-	emptyAllMessage?: ReactNode;
+	emptyListMessage?: ReactNode;
 	noResultsMessage?: (query: string) => ReactNode;
 	listAriaLabel?: string;
 }
@@ -61,7 +61,7 @@ export function FilterableList<T>({
 	keyFn,
 	searchLabel = "Търси",
 	searchPlaceholder = "Търси...",
-	emptyAllMessage,
+	emptyListMessage,
 	noResultsMessage,
 	listAriaLabel = "Резултати",
 }: FilterableListProps<T>) {
@@ -89,11 +89,11 @@ export function FilterableList<T>({
 					: `${filtered.length} резултата намерени`}
 			</p>
 
-			{items.length === 0 && emptyAllMessage ? (
+			{items.length === 0 && emptyListMessage ? (
 				<p
 					className="filterable-list__empty"
 					role="status">
-					{emptyAllMessage}
+					{emptyListMessage}
 				</p>
 			) : filtered.length === 0 ? (
 				<p
