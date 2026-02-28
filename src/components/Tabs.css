@@ -4,6 +4,7 @@
 	border: 1px solid var(--border);
 	border-radius: var(--radius-xl);
 	overflow: hidden;
+	width: 100%;
 }
 
 .tabs__list {
@@ -11,10 +12,17 @@
 	padding: 6px 6px 0;
 	gap: 2px;
 	border-bottom: 1px solid var(--border);
+	overflow-x: auto;
+	scrollbar-width: none;
+}
+
+.tabs__list::-webkit-scrollbar {
+	display: none;
 }
 
 .tabs__btn {
 	flex: 1;
+	min-width: fit-content;
 	padding: 9px 14px;
 	background: transparent;
 	border: none;
@@ -26,6 +34,13 @@
 	position: relative;
 	transition: background 0.12s, color 0.12s;
 	white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+	.tabs__btn {
+		padding: 8px 10px;
+		font-size: 0.8rem;
+	}
 }
 
 .tabs__btn:hover {

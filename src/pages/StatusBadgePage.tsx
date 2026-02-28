@@ -1,44 +1,29 @@
 import ExerciseLayout from "../layouts/ExerciseLayout";
 import StatusBadge from "../components/StatusBadge";
+import "./StatusBadgePage.css";
 
 function StatusBadgePage() {
 	return (
 		<ExerciseLayout exerciseId={2}>
-			<div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-				<section aria-label="Без label">
-					<p
-						style={{
-							fontSize: "0.72rem",
-							fontWeight: 700,
-							letterSpacing: "0.08em",
-							textTransform: "uppercase",
-							color: "var(--text-muted)",
-							marginBottom: "10px",
-						}}>
-						Без label
-					</p>
+			<div className="status-demo">
+				<section
+					className="status-demo__section"
+					aria-label="Без label">
+					<p className="status-demo__heading">Без label</p>
 
-					<div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+					<div className="status-demo__badges">
 						<StatusBadge status="online" />
 						<StatusBadge status="away" />
 						<StatusBadge status="offline" />
 					</div>
 				</section>
 
-				<section aria-label="С label (бонус)">
-					<p
-						style={{
-							fontSize: "0.72rem",
-							fontWeight: 700,
-							letterSpacing: "0.08em",
-							textTransform: "uppercase",
-							color: "var(--text-muted)",
-							marginBottom: "10px",
-						}}>
-						С label (бонус)
-					</p>
+				<section
+					className="status-demo__section"
+					aria-label="С label (бонус)">
+					<p className="status-demo__heading">С label (бонус)</p>
 
-					<div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+					<div className="status-demo__badges">
 						<StatusBadge
 							status="online"
 							label="Иван"

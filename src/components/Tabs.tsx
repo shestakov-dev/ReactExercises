@@ -1,4 +1,4 @@
-import { useState, Children, type ReactNode } from "react";
+import { useState, Children, useRef, type ReactNode, type ReactElement, type KeyboardEvent } from "react";
 import "./Tabs.css";
 
 export interface TabProps {
@@ -12,8 +12,32 @@ export function Tab(_props: TabProps) {
 
 export function Tabs({ children }: { children: ReactNode }) {
 	const [active, setActive] = useState(0);
+	const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
-	const tabs = Children.toArray(children) as React.ReactElement<TabProps>[];
+	const tabs = Children.toArray(children) as ReactElement<TabProps>[];
+
+	function handleKeyDown(e: KeyboardEvent<HTMLButtonElement>, index: number) {
+		if (e.key === "ArrowRight") {
+			e.preventDefault();
+			const next = (index + 1) % tabs.length;
+			setActive(next);
+			tabRefs.current[next]?.focus();
+		} else if (e.key === "ArrowLeft") {
+			e.preventDefault();
+			const prev = (index - 1 + tabs.length) % tabs.length;
+			setActive(prev);
+			tabRefs.current[prev]?.focus();
+		} else if (e.key === "Home") {
+			e.preventDefault();
+			setActive(0);
+			tabRefs.current[0]?.focus();
+		} else if (e.key === "End") {
+			e.preventDefault();
+			const last = tabs.length - 1;
+			setActive(last);
+			tabRefs.current[last]?.focus();
+		}
+	}
 
 	return (
 		<div className="tabs">
@@ -24,6 +48,7 @@ export function Tabs({ children }: { children: ReactNode }) {
 				{tabs.map((tab, index) => (
 					<button
 						key={index}
+						ref={el => { tabRefs.current[index] = el; }}
 						type="button"
 						role="tab"
 						id={`tab-${index}`}
@@ -32,13 +57,7 @@ export function Tabs({ children }: { children: ReactNode }) {
 						tabIndex={active === index ? 0 : -1}
 						className="tabs__btn"
 						onClick={() => setActive(index)}
-						onKeyDown={e => {
-							if (e.key === "ArrowRight") {
-								setActive((active + 1) % tabs.length);
-							} else if (e.key === "ArrowLeft") {
-								setActive((active - 1 + tabs.length) % tabs.length);
-							}
-						}}>
+						onKeyDown={e => handleKeyDown(e, index)}>
 						{tab.props.label}
 					</button>
 				))}

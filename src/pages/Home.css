@@ -8,10 +8,16 @@
 
 /* ---- Exercise list ---- */
 .home-main {
-	padding: 0 32px 56px;
+	padding: 32px 16px 56px;
 	max-width: 860px;
 	margin: 0 auto;
 	width: 100%;
+}
+
+@media (min-width: 640px) {
+	.home-main {
+		padding: 0 32px 56px;
+	}
 }
 
 .exercises-list {

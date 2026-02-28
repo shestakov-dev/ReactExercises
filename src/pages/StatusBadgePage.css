@@ -1,0 +1,26 @@
+.status-demo {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.status-demo__section {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.status-demo__heading {
+	font-size: 0.72rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	margin-bottom: 10px;
+}
+
+.status-demo__badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+}

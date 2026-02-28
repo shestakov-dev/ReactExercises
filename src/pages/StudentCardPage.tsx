@@ -1,10 +1,11 @@
 import StudentCard from "../components/StudentCard";
 import ExerciseLayout from "../layouts/ExerciseLayout";
+import "./StudentCardPage.css";
 
 function StudentCardPage() {
 	return (
 		<ExerciseLayout exerciseId={1}>
-			<div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+			<div className="demo-card-list">
 				<StudentCard
 					name="Иван Петров"
 					grade="11Б"
