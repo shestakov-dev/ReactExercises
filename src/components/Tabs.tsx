@@ -1,4 +1,11 @@
-import { useState, Children, useRef, type ReactNode, type ReactElement, type KeyboardEvent } from "react";
+import {
+	useState,
+	Children,
+	useRef,
+	type ReactNode,
+	type ReactElement,
+	type KeyboardEvent,
+} from "react";
 import "./Tabs.css";
 
 export interface TabProps {
@@ -48,14 +55,16 @@ export function Tabs({ children }: { children: ReactNode }) {
 				{tabs.map((tab, index) => (
 					<button
 						key={index}
-						ref={el => { tabRefs.current[index] = el; }}
+						ref={el => {
+							tabRefs.current[index] = el;
+						}}
 						type="button"
 						role="tab"
 						id={`tab-${index}`}
 						aria-selected={active === index}
 						aria-controls={`tabpanel-${index}`}
 						tabIndex={active === index ? 0 : -1}
-						className="tabs__btn"
+						className="tabs__button"
 						onClick={() => setActive(index)}
 						onKeyDown={e => handleKeyDown(e, index)}>
 						{tab.props.label}
@@ -69,7 +78,7 @@ export function Tabs({ children }: { children: ReactNode }) {
 					role="tabpanel"
 					id={`tabpanel-${index}`}
 					aria-labelledby={`tab-${index}`}
-					tabIndex={0}
+					tabIndex={-1}
 					hidden={active !== index}
 					className="tabs__panel">
 					{tab.props.children}

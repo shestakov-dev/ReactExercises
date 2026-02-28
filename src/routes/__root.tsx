@@ -5,5 +5,14 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
-	return <Outlet />;
+	return (
+		<>
+			<a
+				href="#main-content"
+				className="skip-link">
+				Прескочи към съдържанието
+			</a>
+			<Outlet />
+		</>
+	);
 }

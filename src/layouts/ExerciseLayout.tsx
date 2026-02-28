@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import "./ExerciseLayout.css";
 import { difficultyClassModifier, getExerciseById } from "../config/exercises";
+import IconArrowLeft from "../assets/icons/IconArrowLeft";
 
 interface ExerciseLayoutProps {
 	exerciseId: number;
@@ -25,19 +26,7 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 							to="/"
 							className="exercise-topbar__back"
 							aria-label="Назад към всички упражнения">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								width="14"
-								height="14"
-								viewBox="0 0 24 24"
-								fill="none"
-								stroke="currentColor"
-								strokeWidth="2.5"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								aria-hidden="true">
-								<path d="M19 12H5M12 19l-7-7 7-7" />
-							</svg>
+							<IconArrowLeft />
 							Всички упражнения
 						</Link>
 					</nav>
@@ -71,15 +60,19 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 						aria-hidden="true"
 					/>
 
-					<p className="exercise-aside__section">Описание</p>
-					<div className="exercise-aside__desc">
-						<p>{description}</p>
-						{codeExample && (
-							<pre className="exercise-aside__code">
-								<code>{codeExample}</code>
-							</pre>
-						)}
-					</div>
+					<dl className="exercise-aside__details">
+						<div className="exercise-aside__detail-group">
+							<dt className="exercise-aside__section">Описание</dt>
+							<dd className="exercise-aside__desc">
+								<p>{description}</p>
+								{codeExample && (
+									<pre className="exercise-aside__code" tabIndex={-1}>
+										<code>{codeExample}</code>
+									</pre>
+								)}
+							</dd>
+						</div>
+					</dl>
 
 					{hint && (
 						<div
@@ -95,7 +88,11 @@ function ExerciseLayout({ exerciseId, children }: ExerciseLayoutProps) {
 				<section
 					className="exercise-demo"
 					aria-label="Демо на задачата">
-					<p className="exercise-demo__label">Демо</p>
+					<p
+						className="exercise-demo__label"
+						aria-hidden="true">
+						Демо
+					</p>
 
 					{children}
 				</section>

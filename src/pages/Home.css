@@ -54,6 +54,12 @@
 .exercise-card:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: 2px;
+	text-decoration: none;
+}
+
+.exercise-card:focus-visible .exercise-card__title,
+.exercise-card:focus-visible .exercise-card__num {
+	text-decoration: none;
 }
 
 .exercise-card__num {
@@ -91,6 +97,28 @@
 	flex-shrink: 0;
 }
 
+@media (max-width: 540px) {
+	.exercise-card {
+		grid-template-columns: 44px 1fr;
+		grid-template-rows: auto auto;
+	}
+
+	.exercise-card__right {
+		grid-column: 2;
+		grid-row: 2;
+		justify-content: space-between;
+	}
+
+	.exercise-card__body {
+		grid-column: 2;
+		grid-row: 1;
+	}
+
+	.exercise-card__num {
+		grid-row: 1 / 3;
+	}
+}
+
 .exercise-card__arrow {
 	color: var(--text-muted);
 	transition:
@@ -102,4 +130,8 @@
 .exercise-card:hover .exercise-card__arrow {
 	color: var(--accent);
 	transform: translateX(3px);
+}
+
+nav:focus {
+	outline: none;
 }

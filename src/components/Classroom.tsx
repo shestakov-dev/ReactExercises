@@ -1,6 +1,7 @@
 import { useState, useId, type SubmitEvent } from "react";
 import { Tabs, Tab } from "./Tabs";
 import { Accordion, AccordionItem } from "./Accordion";
+import { FilterableList } from "./FilterableStudentList";
 import StudentCard from "./StudentCard";
 import "./FilterableStudentList.css";
 import "./Classroom.css";
@@ -86,14 +87,14 @@ function GradeModal({ open, studentName, onClose, onSubmit }: GradeModalProps) {
 					<div className="modal__actions">
 						<button
 							type="button"
-							className="btn"
+							className="button"
 							onClick={onClose}>
 							Отказ
 						</button>
 
 						<button
 							type="submit"
-							className="btn btn--primary">
+							className="button button--primary">
 							Запази
 						</button>
 					</div>
@@ -177,7 +178,7 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 
 				<button
 					type="submit"
-					className="btn btn--primary">
+					className="button button--primary">
 					Добави
 				</button>
 			</div>
@@ -214,14 +215,14 @@ function StudentRow({ student, onGrade, onDelete }: StudentRowProps) {
 				<div className="student-row__actions">
 					<button
 						type="button"
-						className="btn btn--sm"
+						className="button button--sm"
 						onClick={() => setModal(true)}
-						aria-label={`Постави оценка на ${student.name}`}>
-						+ Оценка
+						aria-label={`Нанеси оценка на ${student.name}`}>
+						Нанеси оценка
 					</button>
 					<button
 						type="button"
-						className="btn btn--sm btn--danger"
+						className="button button--sm button--danger"
 						onClick={() => onDelete(student.id)}
 						aria-label={`Изтрий ${student.name}`}>
 						Изтрий
@@ -260,9 +261,9 @@ function ClassStats({ students }: { students: Student[] }) {
 			<dl className="class-stats__grid">
 				{[
 					["Ученици", students.length],
-					["Среден успех", averageScore !== null ? averageScore.toFixed(2) : "—"],
-					["Най-висока", maxScore !== null ? maxScore.toFixed(2) : "—"],
-					["Най-ниска", minScore !== null ? minScore.toFixed(2) : "—"],
+					["Среден успех", averageScore !== null ? averageScore.toFixed(2) : "–"],
+					["Най-висока", maxScore !== null ? maxScore.toFixed(2) : "–"],
+					["Най-ниска", minScore !== null ? minScore.toFixed(2) : "–"],
 				].map(([label, value]) => (
 					<div
 						key={label as string}
@@ -276,10 +277,42 @@ function ClassStats({ students }: { students: Student[] }) {
 	);
 }
 
+function StudentContainer({ student, onGrade, onDelete }: StudentRowProps) {
+	return (
+		<div className="student-container">
+			<StudentRow
+				student={student}
+				onGrade={onGrade}
+				onDelete={onDelete}
+			/>
+
+			<Accordion>
+				<AccordionItem title="Покажи оценки">
+					{student.scores.length > 0 ? (
+						<div className="student-scores">
+							<p className="student-scores__label">Всички оценки:</p>
+							<div className="student-scores__list">
+								{student.scores.map((score, i) => (
+									<span
+										key={i}
+										className="score-chip">
+										{score.toFixed(2)}
+									</span>
+								))}
+							</div>
+						</div>
+					) : (
+						<p className="student-scores-empty">Все още няма нанесени оценки.</p>
+					)}
+				</AccordionItem>
+			</Accordion>
+		</div>
+	);
+}
+
 function Classroom() {
 	const [students, setStudents] = useState<Student[]>([]);
 	const [sortByAvg, setSortByAvg] = useState(false);
-	const [searchQuery, setSearchQuery] = useState("");
 
 	function handleAdd(name: string, grade: string) {
 		const id = crypto.randomUUID();
@@ -312,15 +345,11 @@ function Classroom() {
 				student.scores.length
 			: 0;
 
-	const filteredStudents = students.filter(student =>
-		student.name.toLowerCase().includes(searchQuery.toLowerCase()),
-	);
-
-	const displayed = sortByAvg
-		? [...filteredStudents].sort(
+	const sortedStudents = sortByAvg
+		? [...students].sort(
 				(a, b) => studentAverageScore(b) - studentAverageScore(a),
 			)
-		: filteredStudents;
+		: students;
 
 	return (
 		<div className="classroom">
@@ -331,98 +360,36 @@ function Classroom() {
 
 				<Tab label={`Списък (${students.length})`}>
 					<div className="classroom-students">
-						<div className="search-wrapper">
-							<label
-								htmlFor="classroom-search"
-								className="form-label">
-								Търси по име
-							</label>
-							<div className="search-field">
-								<svg
-									className="search-field__icon"
-									xmlns="http://www.w3.org/2000/svg"
-									width="15"
-									height="15"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth="2"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									aria-hidden="true">
-									<circle
-										cx="11"
-										cy="11"
-										r="8"
-									/>
-									<path d="m21 21-4.35-4.35" />
-								</svg>
-								<input
-									id="classroom-search"
-									type="search"
-									className="search-field__input"
-									placeholder="Име на ученик"
-									value={searchQuery}
-									onChange={e => setSearchQuery(e.target.value)}
-								/>
-							</div>
-						</div>
-
 						{students.length > 1 && (
 							<button
 								type="button"
-								className={`btn btn--sm ${sortByAvg ? "btn--primary" : ""}`}
+								className={`button button--sm classroom-sort-button ${sortByAvg ? "button--primary" : ""}`}
 								onClick={() => setSortByAvg(value => !value)}
-								aria-pressed={sortByAvg}
-								style={{ marginTop: "12px" }}>
+								aria-pressed={sortByAvg}>
 								{sortByAvg ? "Сортирано по успех" : "Сортирай по успех"}
 							</button>
 						)}
 
-						{students.length === 0 ? (
-							<p className="classroom-empty">Все още няма добавени ученици.</p>
-						) : displayed.length === 0 ? (
-							<p className="classroom-empty">
-								Няма намерени ученици за "{searchQuery}"
-							</p>
-						) : (
-							<div className="students-list">
-								{displayed.map(student => (
-									<div
-										key={student.id}
-										className="student-container">
-										<StudentRow
-											student={student}
-											onGrade={handleGrade}
-											onDelete={handleDelete}
-										/>
-
-										<Accordion>
-											<AccordionItem title="Покажи оценки">
-												{student.scores.length > 0 ? (
-													<div className="student-scores">
-														<p className="student-scores__label">Всички оценки:</p>
-														<div className="student-scores__list">
-															{student.scores.map((score, i) => (
-																<span
-																	key={i}
-																	className="score-chip">
-																	{score.toFixed(2)}
-																</span>
-															))}
-														</div>
-													</div>
-												) : (
-													<p className="student-scores-empty">
-														Все още няма поставени оценки.
-													</p>
-												)}
-											</AccordionItem>
-										</Accordion>
-									</div>
-								))}
-							</div>
-						)}
+						<FilterableList
+							items={sortedStudents}
+							filterFn={(student, query) =>
+								student.name.toLowerCase().includes(query.toLowerCase())
+							}
+							renderItem={student => (
+								<StudentContainer
+									student={student}
+									onGrade={handleGrade}
+									onDelete={handleDelete}
+								/>
+							)}
+							keyFn={student => student.id}
+							searchLabel="Търси по име"
+							searchPlaceholder="Име на ученик"
+							searchId="classroom-search"
+							emptyAllMessage="Все още няма добавени ученици."
+							noResultsMessage={query => `Няма намерени ученици за "${query}"`}
+							listAriaLabel="Списък с ученици"
+						/>
 					</div>
 				</Tab>
 

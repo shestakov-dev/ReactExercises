@@ -1,12 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { difficultyClassModifier, exercises } from "../config/exercises";
+import IconArrowRight from "../assets/icons/IconArrowRight";
 import "./Home.css";
 
 function Home() {
 	return (
 		<main className="home-page">
 			<div className="home-main">
-				<nav aria-label="Упражнения">
+				<nav id="main-content" tabIndex={-1} aria-label="Упражнения">
 					<ol className="exercises-list">
 						{exercises.map(exercise => (
 							<li key={exercise.id}>
@@ -30,20 +31,7 @@ function Home() {
 											aria-hidden="true">
 											{exercise.difficulty}
 										</span>
-										<svg
-											className="exercise-card__arrow"
-											xmlns="http://www.w3.org/2000/svg"
-											width="15"
-											height="15"
-											viewBox="0 0 24 24"
-											fill="none"
-											stroke="currentColor"
-											strokeWidth="2"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											aria-hidden="true">
-											<path d="M5 12h14M12 5l7 7-7 7" />
-										</svg>
+										<IconArrowRight className="exercise-card__arrow" />
 									</div>
 								</Link>
 							</li>

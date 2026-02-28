@@ -63,8 +63,8 @@ ol {
 	--border-light: #383b50;
 
 	--text-primary: #e2e6f0;
-	--text-secondary: #8892a6;
-	--text-muted: #555c72;
+	--text-secondary: #9aa3b8;
+	--text-muted: #7d8699;
 
 	--accent: #818cf8;
 	--accent-hover: #a5b4fc;
@@ -123,23 +123,23 @@ code {
 }
 
 .skip-link {
-	position: fixed;
+	position: absolute;
 	top: -100px;
 	left: 8px;
-	background: var(--accent);
+	background: #ffffff;
 	color: #0d0f17;
 	padding: 8px 16px;
 	text-decoration: none;
 	z-index: 9999;
 	border-radius: var(--radius);
-	font-weight: 600;
+	font-weight: 700;
 	font-size: 0.875rem;
 	transition: top 0.15s;
 }
 
 .skip-link:focus {
 	top: 8px;
-	outline: 2px solid var(--accent-hover);
+	outline: 3px solid #0d0f17;
 	outline-offset: 2px;
 }
 

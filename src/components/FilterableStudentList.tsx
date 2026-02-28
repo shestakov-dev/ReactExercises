@@ -1,7 +1,126 @@
-import { useState } from "react";
+import { useState, useId, type ReactNode } from "react";
 import StudentCard from "./StudentCard";
+import IconSearch from "../assets/icons/IconSearch";
 import "./FilterableStudentList.css";
 
+interface SearchInputProps {
+	value: string;
+	onChange: (value: string) => void;
+	label?: string;
+	placeholder?: string;
+	id?: string;
+}
+
+export function SearchInput({
+	value,
+	onChange,
+	label = "Търси",
+	placeholder = "Търси...",
+	id,
+}: SearchInputProps) {
+	const generatedId = useId();
+	const inputId = id ?? generatedId;
+
+	return (
+		<div className="search-wrapper">
+			<label
+				htmlFor={inputId}
+				className="form-label">
+				{label}
+			</label>
+
+			<div className="search-field">
+				<IconSearch className="search-field__icon" />
+
+				<input
+					id={inputId}
+					type="search"
+					className="search-field__input"
+					placeholder={placeholder}
+					value={value}
+					onChange={e => onChange(e.target.value)}
+				/>
+			</div>
+		</div>
+	);
+}
+
+interface FilterableListProps<T> {
+	items: T[];
+	filterFn: (item: T, query: string) => boolean;
+	renderItem: (item: T) => ReactNode;
+	keyFn: (item: T) => string | number;
+	searchLabel?: string;
+	searchPlaceholder?: string;
+	emptyAllMessage?: ReactNode;
+	noResultsMessage?: (query: string) => ReactNode;
+	searchId?: string;
+	listAriaLabel?: string;
+}
+
+export function FilterableList<T>({
+	items,
+	filterFn,
+	renderItem,
+	keyFn,
+	searchLabel = "Търси",
+	searchPlaceholder = "Търси...",
+	emptyAllMessage,
+	noResultsMessage,
+	searchId,
+	listAriaLabel = "Резултати",
+}: FilterableListProps<T>) {
+	const [query, setQuery] = useState("");
+
+	const filtered = items.filter(item => filterFn(item, query));
+
+	return (
+		<div className="filterable-list">
+			<SearchInput
+				value={query}
+				onChange={setQuery}
+				label={searchLabel}
+				placeholder={searchPlaceholder}
+				id={searchId}
+			/>
+
+			<p
+				className="visually-hidden"
+				aria-live="polite"
+				aria-atomic="true">
+				{filtered.length === 0
+					? "Няма намерени резултати"
+					: `${filtered.length} резултата намерени`}
+			</p>
+
+			{items.length === 0 && emptyAllMessage ? (
+				<p
+					className="filterable-list__empty"
+					role="status">
+					{emptyAllMessage}
+				</p>
+			) : filtered.length === 0 ? (
+				<p
+					className="filterable-list__empty"
+					role="status">
+					{noResultsMessage
+						? noResultsMessage(query)
+						: `Няма намерени резултати за "${query}"`}
+				</p>
+			) : (
+				<ul
+					className="filterable-list__results"
+					aria-label={listAriaLabel}>
+					{filtered.map(item => (
+						<li key={keyFn(item)}>{renderItem(item)}</li>
+					))}
+				</ul>
+			)}
+		</div>
+	);
+}
+
+// Student example (for the exercise to count as complete)
 interface Student {
 	id: number;
 	name: string;
@@ -20,101 +139,26 @@ const STUDENTS: Student[] = [
 	{ id: 8, name: "Виктория Тодорова", grade: "9В", averageScore: 5.84 },
 ];
 
-interface SearchInputProps {
-	value: string;
-	onChange: (value: string) => void;
-}
-
-function SearchInput({ value, onChange }: SearchInputProps) {
-	return (
-		<div className="search-wrapper">
-			<label
-				htmlFor="student-search"
-				className="form-label">
-				Търси по име
-			</label>
-
-			<div className="search-field">
-				<svg
-					className="search-field__icon"
-					xmlns="http://www.w3.org/2000/svg"
-					width="15"
-					height="15"
-					viewBox="0 0 24 24"
-					fill="none"
-					stroke="currentColor"
-					strokeWidth="2"
-					strokeLinecap="round"
-					strokeLinejoin="round"
-					aria-hidden="true">
-					<circle
-						cx="11"
-						cy="11"
-						r="8"
-					/>
-					<path d="m21 21-4.35-4.35" />
-				</svg>
-
-				<input
-					id="student-search"
-					type="search"
-					className="search-field__input"
-					placeholder="Име на ученик"
-					value={value}
-					onChange={e => onChange(e.target.value)}
-				/>
-			</div>
-		</div>
-	);
-}
-
 function FilterableStudentList() {
-	const [query, setQuery] = useState("");
-
-	const filtered = STUDENTS.filter(student =>
-		student.name.toLowerCase().includes(query.toLowerCase()),
-	);
-
 	return (
-		<div className="filterable-list">
-			<SearchInput
-				value={query}
-				onChange={setQuery}
-			/>
-
-			<p
-				className="visually-hidden"
-				aria-live="polite"
-				aria-atomic="true">
-				{filtered.length === 0
-					? "Няма намерени ученици"
-					: `${filtered.length} ученика намерени`}
-			</p>
-
-			{filtered.length === 0 ? (
-				<p
-					className="filterable-list__empty"
-					role="status">
-					Няма намерени ученици за "{query}"
-				</p>
-			) : (
-				<ul
-					className="student-list"
-					aria-label="Резултати">
-					{filtered.map(student => (
-						<li
-							key={student.id}
-							className="student-list__item">
-							<StudentCard
-								name={student.name}
-								grade={student.grade}
-								averageScore={student.averageScore}
-							/>
-						</li>
-					))}
-				</ul>
+		<FilterableList
+			items={STUDENTS}
+			filterFn={(student, query) =>
+				student.name.toLowerCase().includes(query.toLowerCase())
+			}
+			renderItem={student => (
+				<StudentCard
+					name={student.name}
+					grade={student.grade}
+					averageScore={student.averageScore}
+				/>
 			)}
-		</div>
+			keyFn={student => student.id}
+			searchLabel="Търси по име"
+			searchPlaceholder="Име на ученик"
+			noResultsMessage={query => `Няма намерени ученици за "${query}"`}
+			listAriaLabel="Списък с ученици"
+		/>
 	);
 }
 

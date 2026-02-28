@@ -58,6 +58,14 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	min-width: 0;
+	flex: 1;
+}
+
+@media (max-width: 480px) {
+	.exercise-topbar__label {
+		display: none;
+	}
 }
 
 .exercise-body {
@@ -125,10 +133,28 @@
 	margin-bottom: 22px;
 }
 
+@media (max-width: 860px) {
+	.exercise-aside__title {
+		margin-bottom: 8px;
+	}
+}
+
 .exercise-aside__rule {
 	height: 1px;
 	background: var(--border);
 	margin-bottom: 20px;
+}
+
+.exercise-aside__details {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.exercise-aside__detail-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
 }
 
 .exercise-aside__section {
@@ -144,6 +170,7 @@
 	font-size: 0.875rem;
 	color: var(--text-secondary);
 	line-height: 1.7;
+	margin: 0;
 }
 
 .exercise-aside__desc p {
@@ -205,6 +232,11 @@
 .exercise-demo {
 	padding: 28px 32px;
 	overflow-y: auto;
+	min-width: 0;
+}
+
+.exercise-demo:focus {
+	outline: none;
 }
 
 .exercise-demo__label {

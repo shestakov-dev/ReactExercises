@@ -1,5 +1,13 @@
-import { useState, Children, type ReactNode, type ReactElement } from "react";
+import {
+	useState,
+	Children,
+	useRef,
+	type ReactNode,
+	type ReactElement,
+	type KeyboardEvent,
+} from "react";
 import "./Accordion.css";
+import IconChevronDown from "../assets/icons/IconChevronDown";
 
 export interface AccordionItemProps {
 	title: string;
@@ -16,7 +24,7 @@ export function AccordionItem({
 	onToggle,
 	itemId = "item",
 }: AccordionItemProps) {
-	const buttonId = `${itemId}-btn`;
+	const buttonId = `${itemId}-button`;
 	const bodyId = `${itemId}-body`;
 
 	return (
@@ -25,25 +33,12 @@ export function AccordionItem({
 				<button
 					id={buttonId}
 					type="button"
-					className="accordion-item__btn"
+					className="accordion-item__button"
 					aria-expanded={isOpen}
 					aria-controls={bodyId}
 					onClick={onToggle}>
 					{title}
-					<svg
-						className="accordion-item__icon"
-						xmlns="http://www.w3.org/2000/svg"
-						width="16"
-						height="16"
-						viewBox="0 0 24 24"
-						fill="none"
-						stroke="currentColor"
-						strokeWidth="2"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						aria-hidden="true">
-						<path d="M6 9l6 6 6-6" />
-					</svg>
+					<IconChevronDown className="accordion-item__icon" />
 				</button>
 			</h3>
 			<div
@@ -59,20 +54,65 @@ export function AccordionItem({
 
 export function Accordion({ children }: { children: ReactNode }) {
 	const [openIndex, setOpenIndex] = useState<number | null>(null);
+	const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
 	const items = Children.toArray(children) as ReactElement<AccordionItemProps>[];
 
+	function handleKeyDown(e: KeyboardEvent<HTMLElement>, index: number) {
+		if (e.key === "ArrowDown") {
+			e.preventDefault();
+			const next = (index + 1) % items.length;
+			buttonRefs.current[next]?.focus();
+		} else if (e.key === "ArrowUp") {
+			e.preventDefault();
+			const prev = (index - 1 + items.length) % items.length;
+			buttonRefs.current[prev]?.focus();
+		} else if (e.key === "Home") {
+			e.preventDefault();
+			buttonRefs.current[0]?.focus();
+		} else if (e.key === "End") {
+			e.preventDefault();
+			buttonRefs.current[items.length - 1]?.focus();
+		}
+	}
+
 	return (
 		<div className="accordion">
-			{items.map((item, index) => (
-				<AccordionItem
-					key={index}
-					{...item.props}
-					itemId={`accordion-${index}`}
-					isOpen={openIndex === index}
-					onToggle={() => setOpenIndex(openIndex === index ? null : index)}
-				/>
-			))}
+			{items.map((item, index) => {
+				const buttonId = `accordion-${index}-button`;
+				const bodyId = `accordion-${index}-body`;
+				const isOpen = openIndex === index;
+
+				return (
+					<div
+						key={index}
+						className="accordion-item">
+						<h3 className="accordion-item__heading">
+							<button
+								ref={el => {
+									buttonRefs.current[index] = el;
+								}}
+								id={buttonId}
+								type="button"
+								className="accordion-item__button"
+								aria-expanded={isOpen}
+								aria-controls={bodyId}
+								onClick={() => setOpenIndex(isOpen ? null : index)}
+								onKeyDown={e => handleKeyDown(e, index)}>
+								{item.props.title}
+								<IconChevronDown className="accordion-item__icon" />
+							</button>
+						</h3>
+						<div
+							id={bodyId}
+							role="region"
+							aria-labelledby={buttonId}
+							hidden={!isOpen}>
+							<div className="accordion-item__body">{item.props.children}</div>
+						</div>
+					</div>
+				);
+			})}
 		</div>
 	);
 }
