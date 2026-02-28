@@ -22,39 +22,6 @@ const MAX_TITLE_LENGTH = 120;
 const MAX_QUESTION_LENGTH = 200;
 const MAX_OPTION_LENGTH = 150;
 
-function QuizHeader({
-	title,
-	onChange,
-}: {
-	title: string;
-	onChange: (value: string) => void;
-}) {
-	return (
-		<div className="quiz-header-bar__field">
-			<label
-				htmlFor="quiz-title-input"
-				className="quiz-header-bar__label">
-				Заглавие на теста
-			</label>
-
-			<input
-				id="quiz-title-input"
-				type="text"
-				className="quiz-title-input"
-				value={title}
-				onChange={e => onChange(e.target.value)}
-				placeholder="Въведете заглавие..."
-				maxLength={MAX_TITLE_LENGTH}
-			/>
-
-			<LengthWarning
-				value={title}
-				max={MAX_TITLE_LENGTH}
-			/>
-		</div>
-	);
-}
-
 function QuizStats({ questions }: { questions: Question[] }) {
 	const totalOptions = questions.reduce(
 		(total, question) => total + question.options.length,
@@ -167,7 +134,7 @@ function QuestionEditor({
 			<header className="quiz-editor__head">
 				<span
 					id={labelId}
-					className="quiz-editor__num">
+					className="quiz-editor__number">
 					Въпрос {index + 1}
 				</span>
 
@@ -349,7 +316,7 @@ function QuestionPreview({
 		<article
 			className="quiz-preview"
 			aria-label={`Въпрос ${index + 1}`}>
-			<p className="quiz-preview__num">Въпрос {index + 1}</p>
+			<p className="quiz-preview__number">Въпрос {index + 1}</p>
 
 			<p className="quiz-preview__text">
 				{question.text ?? <span className="placeholder-text">(Без текст)</span>}
@@ -490,25 +457,45 @@ export function QuizBuilder() {
 	return (
 		<div className="quiz-builder">
 			<div className="quiz-header-bar">
-				{isPreview ? (
-					<div className="quiz-header-bar__preview-title">
-						<p className="quiz-title-preview">
-							{title ?? <span className="placeholder-text">(Без заглавие)</span>}
-						</p>
-					</div>
-				) : (
-					<QuizHeader
-						title={title}
-						onChange={setTitle}
-					/>
-				)}
+				<div className="quiz-header-bar__field">
+					<label
+						htmlFor="quiz-title-input"
+						className="quiz-header-bar__label">
+						Заглавие на теста
+					</label>
 
-				<button
-					type="button"
-					className="button button--primary"
-					onClick={handleModeToggle}>
-					{isPreview ? "Редактиране" : "Преглед"}
-				</button>
+					<div className="quiz-header-bar__input-row">
+						{isPreview ? (
+							<p className="quiz-title-preview">
+								{title ?? <span className="placeholder-text">(Без заглавие)</span>}
+							</p>
+						) : (
+							<input
+								id="quiz-title-input"
+								type="text"
+								className="quiz-title-input"
+								value={title}
+								onChange={e => setTitle(e.target.value)}
+								placeholder="Въведете заглавие..."
+								maxLength={MAX_TITLE_LENGTH}
+							/>
+						)}
+
+						<button
+							type="button"
+							className="button button--primary"
+							onClick={handleModeToggle}>
+							{isPreview ? "Редактиране" : "Преглед"}
+						</button>
+					</div>
+
+					{!isPreview && (
+						<LengthWarning
+							value={title}
+							max={MAX_TITLE_LENGTH}
+						/>
+					)}
+				</div>
 			</div>
 
 			<main

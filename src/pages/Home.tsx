@@ -17,7 +17,7 @@ export function Home() {
 									className="exercise-card"
 									aria-label={`Упражнение ${exercise.id}: ${exercise.title}, трудност ${exercise.difficulty}`}>
 									<div
-										className="exercise-card__num"
+										className="exercise-card__number"
 										aria-hidden="true">
 										{String(exercise.id).padStart(2, "0")}
 									</div>

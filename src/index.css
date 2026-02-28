@@ -209,6 +209,7 @@ code {
 
 .button--danger:hover {
 	background: var(--red-dim);
+	border-color: var(--red);
 }
 
 .button--ghost {

@@ -56,11 +56,11 @@
 }
 
 .exercise-card:focus-visible .exercise-card__title,
-.exercise-card:focus-visible .exercise-card__num {
+.exercise-card:focus-visible .exercise-card__number {
 	text-decoration: none;
 }
 
-.exercise-card__num {
+.exercise-card__number {
 	width: 44px;
 	height: 44px;
 	border-radius: var(--radius);
@@ -71,7 +71,7 @@
 	justify-content: center;
 	font-size: 0.825rem;
 	font-weight: 700;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	font-family: var(--font-mono);
 	flex-shrink: 0;
 }
@@ -112,7 +112,7 @@
 		grid-row: 1;
 	}
 
-	.exercise-card__num {
+	.exercise-card__number {
 		grid-row: 1 / 3;
 	}
 }

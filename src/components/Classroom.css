@@ -74,28 +74,62 @@
 
 .add-form__body {
 	padding: 16px 18px;
-	display: flex;
-	align-items: flex-start;
-	gap: 10px;
-	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: 1fr 1fr auto;
+	gap: 4px 10px;
 }
 
-.form-group {
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	flex: 1;
-	min-width: 130px;
+.add-form__label-name {
+	grid-column: 1;
+	grid-row: 1;
+}
+
+.add-form__input-name {
+	grid-column: 1;
+	grid-row: 2;
+	min-width: 0;
+}
+
+.add-form__warn-name {
+	grid-column: 1;
+	grid-row: 3;
+}
+
+.add-form__label-grade {
+	grid-column: 2;
+	grid-row: 1;
+}
+
+.add-form__input-grade {
+	grid-column: 2;
+	grid-row: 2;
+	min-width: 0;
+}
+
+.add-form__warn-grade {
+	grid-column: 2;
+	grid-row: 3;
 }
 
 .add-form__submit {
-	margin-top: 22px;
+	grid-column: 3;
+	grid-row: 2;
 }
 
 @media (max-width: 480px) {
+	.add-form__body {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.add-form__label-grade {
+		margin-top: 10px;
+	}
+
 	.add-form__submit {
 		width: 100%;
-		margin-top: 6px;
+		margin-top: 10px;
 	}
 }
 

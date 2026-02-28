@@ -184,48 +184,48 @@ function AddStudentForm({ onAdd }: AddStudentFormProps) {
 			</div>
 
 			<div className="add-form__body">
-				<div className="form-group">
-					<label
-						htmlFor={nameId}
-						className="form-label">
-						Пълно име
-					</label>
+				<label
+					htmlFor={nameId}
+					className="form-label add-form__label-name">
+					Пълно име
+				</label>
 
-					<input
-						id={nameId}
-						type="text"
-						className="form-input"
-						placeholder="Иван Петров"
-						value={name}
-						onChange={e => setName(e.target.value)}
-						maxLength={50}
-						required
-					/>
+				<input
+					id={nameId}
+					type="text"
+					className="form-input add-form__input-name"
+					placeholder="Иван Петров"
+					value={name}
+					onChange={e => setName(e.target.value)}
+					maxLength={50}
+					required
+				/>
 
+				<div className="add-form__warn-name">
 					<LengthWarning
 						value={name}
 						max={50}
 					/>
 				</div>
 
-				<div className="form-group">
-					<label
-						htmlFor={gradeId}
-						className="form-label">
-						Клас
-					</label>
+				<label
+					htmlFor={gradeId}
+					className="form-label add-form__label-grade">
+					Клас
+				</label>
 
-					<input
-						id={gradeId}
-						type="text"
-						className="form-input"
-						placeholder="11 А"
-						value={grade}
-						onChange={e => setGrade(e.target.value)}
-						maxLength={10}
-						required
-					/>
+				<input
+					id={gradeId}
+					type="text"
+					className="form-input add-form__input-grade"
+					placeholder="11 А"
+					value={grade}
+					onChange={e => setGrade(e.target.value)}
+					maxLength={10}
+					required
+				/>
 
+				<div className="add-form__warn-grade">
 					<LengthWarning
 						value={grade}
 						max={10}
