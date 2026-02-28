@@ -207,7 +207,7 @@
 	white-space: pre;
 }
 
-.exercise-aside__code:focus {
+.exercise-aside__code:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: -2px;
 }
@@ -241,7 +241,7 @@
 	min-width: 0;
 }
 
-.exercise-demo:focus {
+.exercise-demo:focus-visible {
 	outline: 2px solid var(--accent);
 	outline-offset: -2px;
 }

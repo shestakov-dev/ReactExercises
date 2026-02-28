@@ -319,7 +319,7 @@ function StudentContainer({ student, onGrade, onDelete }: StudentRowProps) {
 				<AccordionItem title="Покажи оценки">
 					{student.scores.length > 0 ? (
 						<div className="student-scores">
-							<p className="student-scores__label">Всички оценки:</p>
+							<p className="student-scores__label">Всички оценки</p>
 							<div className="student-scores__list">
 								{student.scores.map((score, i) => (
 									<span

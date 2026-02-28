@@ -65,7 +65,7 @@
 	padding: 32px;
 	text-align: center;
 	font-size: 0.875rem;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	background: var(--bg-raised);
 	border: 1px dashed var(--border);
 	border-radius: var(--radius-lg);
@@ -97,7 +97,7 @@
 	padding: 20px;
 	text-align: center;
 	font-size: 0.875rem;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 }
 
 .student-row {
@@ -184,7 +184,7 @@
 	font-weight: 700;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	margin-bottom: 8px;
 }
 
@@ -195,13 +195,13 @@
 }
 
 .score-chip {
-	background: var(--accent-dim);
-	border: 1px solid rgba(129, 140, 248, 0.22);
+	background: var(--bg-base);
+	border: 1px solid var(--border);
 	border-radius: var(--radius-sm);
 	padding: 2px 8px;
 	font-size: 0.75rem;
 	font-family: var(--font-mono);
-	color: var(--accent);
+	color: var(--text-primary);
 	font-weight: 600;
 }
 
@@ -217,7 +217,7 @@
 	font-weight: 700;
 	letter-spacing: 0.1em;
 	text-transform: uppercase;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	margin-bottom: 14px;
 }
 
@@ -241,7 +241,7 @@
 
 .class-stats__item dt {
 	font-size: 0.72rem;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	margin-bottom: 4px;
 	line-height: 1.4;
 }
@@ -272,7 +272,6 @@
 	border: 1px solid var(--border-light);
 	border-radius: var(--radius-xl);
 	padding: 26px;
-	margin: auto;
 	width: 100%;
 	max-width: 360px;
 	box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
@@ -287,7 +286,7 @@
 
 .modal__sub {
 	font-size: 0.825rem;
-	color: var(--text-muted);
+	color: var(--text-secondary);
 	margin-bottom: 18px;
 }
 

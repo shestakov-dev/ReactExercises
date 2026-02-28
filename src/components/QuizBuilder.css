@@ -1,6 +1,7 @@
 .quiz-input {
 	width: 100%;
-	padding: 9px 12px;
+	height: 36px;
+	padding: 0 12px;
 	background: var(--bg-base);
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
@@ -392,7 +393,12 @@
 
 .option-row__delete {
 	align-self: flex-start;
-	height: auto;
+	height: 36px;
+	width: 36px;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .quiz-check-bar {
