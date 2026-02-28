@@ -46,7 +46,7 @@ export function AccordionItem({
 				role="region"
 				aria-labelledby={buttonId}
 				hidden={!isOpen}>
-				<div className="accordion-item__body">{children}</div>
+				<div className="accordion-item__body">{isOpen && children}</div>
 			</div>
 		</div>
 	);
